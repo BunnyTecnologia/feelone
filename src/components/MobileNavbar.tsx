@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Home, FileText, User, Bell, HeartPulse } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -22,10 +22,8 @@ const NavItem: React.FC<NavItemProps> = ({ icon, to, isActive }) => (
 );
 
 const MobileNavbar = () => {
-  // Usando useLocation para determinar o item ativo, mas por simplicidade, 
-  // vamos simular o path atual.
-  // Nota: Em um app real, você usaria useLocation().pathname
-  const currentPath = "/configuracoes"; 
+  const location = useLocation();
+  const currentPath = location.pathname; 
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50">
@@ -60,7 +58,11 @@ const MobileNavbar = () => {
           {/* Lado Direito */}
           <div className="flex w-2/5 justify-around">
             <NavItem to="/perfil" isActive={currentPath === "/perfil"} icon={<User className="h-6 w-6" />} />
-            <NavItem to="/configuracoes" isActive={currentPath === "/configuracoes"} icon={<Bell className="h-6 w-6" />} />
+            <NavItem 
+              to="/configuracoes" 
+              isActive={currentPath === "/configuracoes"} 
+              icon={<Bell className="h-6 w-6" />} 
+            />
           </div>
         </div>
       </div>
