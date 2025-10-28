@@ -109,15 +109,14 @@ const Login = () => {
           </Link>
         </div>
 
-        {/* Patrocinador Logo Placeholder */}
+        {/* Patrocinador Logo */}
         <div className="mt-12 w-full flex justify-center">
           <div className="text-center">
-            {/* Placeholder para o logo 'Esportes da Sorte' */}
-            <span className="text-5xl font-extrabold leading-none text-blue-900 dark:text-blue-400">
-              <span className="text-green-500">E</span>sportes
-              <br />
-              da Sorte
-            </span>
+            <img
+              src="/esportes-da-sorte-seeklogo.png"
+              alt="Logo Esportes da Sorte"
+              className="h-12 md:h-16 object-contain mx-auto"
+            />
           </div>
         </div>
       </div>
