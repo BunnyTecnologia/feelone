@@ -1,9 +1,10 @@
 import React from 'react';
-import { Mail, Users, Eye, DollarSign, ShoppingCart, Calendar, Ticket, Building, Globe } from 'lucide-react';
+import { Mail, Users, Eye, DollarSign, ShoppingCart, Calendar, Ticket, Building, Globe, Megaphone } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import MetricCard from '@/components/MetricCard';
 import TopAccessTable from '@/components/TopAccessTable';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Dashboard = () => {
   // O Dashboard é projetado para desktop, então usamos padding para compensar a Sidebar.
