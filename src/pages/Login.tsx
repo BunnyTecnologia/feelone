@@ -56,13 +56,13 @@ const Login = () => {
 
       <div className="w-full max-w-sm md:max-w-md flex flex-col items-center">
         
-        {/* Logo FeelOne Placeholder */}
+        {/* Logo FeelOne */}
         <div className="mb-10 flex flex-col items-center">
-          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-400 dark:text-gray-500">
-            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" fill="currentColor"/>
-            <path d="M12 6a6 6 0 0 0-6 6h2a4 4 0 0 1 4-4V6z" fill="currentColor"/>
-          </svg>
-          <span className="text-4xl font-extrabold text-blue-900 dark:text-blue-400">FeelOne</span>
+          <img
+            src="/logo-feel-one.png"
+            alt="Logo FeelOne"
+            className="h-16 md:h-20 object-contain mx-auto"
+          />
         </div>
 
         {/* Login Title */}
