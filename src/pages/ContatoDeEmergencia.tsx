@@ -1,11 +1,46 @@
 import React from 'react';
+import { ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import CustomInput from '@/components/CustomInput';
 
 const ContatoDeEmergencia = () => {
+  // Estilo para o botão principal (Salvar)
+  const saveButtonStyle = "bg-[#3A00FF] hover:bg-indigo-700 text-white h-14 text-lg font-semibold rounded-xl";
+
   return (
-    <div className="p-8 min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="text-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-xl">
-        <h1 className="text-3xl font-bold mb-4 text-primary dark:text-primary-foreground">Feel One - Contato de Emergência</h1>
-        <p className="text-muted-foreground">Página de Contato de Emergência.</p>
+    <div className="min-h-screen flex flex-col items-center bg-white dark:bg-gray-900 p-4">
+      
+      {/* Header */}
+      <header className="w-full max-w-sm md:max-w-md pt-4 pb-8">
+        <div className="flex items-center space-x-4">
+          {/* Link para a página anterior (ou Index, por enquanto) */}
+          <Link to="/">
+            <ArrowLeft className="text-[#3A00FF] h-6 w-6" />
+          </Link>
+          <h1 className="text-3xl font-bold text-[#3A00FF]">
+            Contato Emergência
+          </h1>
+        </div>
+      </header>
+
+      <div className="w-full max-w-sm md:max-w-md flex flex-col items-center">
+        
+        {/* Form */}
+        <form className="w-full space-y-4">
+          
+          <CustomInput placeholder="Nome" />
+          <CustomInput placeholder="Telefone com whatsapp" />
+          <CustomInput placeholder="Grau parentesco" />
+          <CustomInput type="email" placeholder="E-mail" />
+
+          {/* Botão Salvar */}
+          <div className="pt-8 pb-8">
+            <Button type="submit" className={`w-full ${saveButtonStyle}`}>
+              Salvar
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );
