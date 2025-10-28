@@ -31,6 +31,7 @@ import HomeRedirect from "./pages/HomeRedirect"; // Novo componente de redirecio
 import Noticias from "./pages/Noticias"; // Nova página de Notícias
 import NoticiasAdmin from "./pages/NoticiasAdmin"; // Nova página de Admin Notícias
 import DetalheNoticia from "./pages/DetalheNoticia"; // Nova página de Detalhes da Notícia
+import PoliticaDePrivacidade from "./pages/PoliticaDePrivacidade"; // Nova página de Política de Privacidade
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
           <Route path="/landing-page" element={<LandingPageHome />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/carteirinha-emergencia" element={<CarteirinhaDeEmergencia />} />
+          <Route path="/politica-privacidade" element={<PoliticaDePrivacidade />} />
           
           {/* Rotas de Funcionalidades */}
           <Route path="/dieta" element={<Dieta />} />

@@ -48,7 +48,7 @@ const Configuracoes = () => {
           <SettingsMenuItem 
             icon={FileText} 
             title="Política de Privacidade" 
-            to="#" // Rota temporária
+            to="/politica-privacidade" // Rota corrigida
           />
         </div>
 
