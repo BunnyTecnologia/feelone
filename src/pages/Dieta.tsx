@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, Utensils } from 'lucide-react';
+import { ArrowLeft, Utensils, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileNavbar from '@/components/MobileNavbar';
 import DietCard from '@/components/DietCard';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button'; // Importando Button
 
 interface Diet {
   id: string;
@@ -19,14 +20,19 @@ const Dieta = () => {
   const { toast } = useToast();
   const [diets, setDiets] = useState<Diet[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false); // Estado para controlar a visibilidade do FAB
 
   useEffect(() => {
     const fetchDiets = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+      
       if (!user) {
         setLoading(false);
+        setIsUserLoggedIn(false);
         return;
       }
+      
+      setIsUserLoggedIn(true);
 
       const { data, error } = await supabase
         .from('dietas')
@@ -90,6 +96,18 @@ const Dieta = () => {
           </div>
         )}
       </main>
+
+      {/* Floating Action Button (FAB) - Adicionar Dieta */}
+      {isUserLoggedIn && (
+        <Link to="/admin/dieta" className="fixed bottom-24 left-6 z-40">
+          <Button 
+            className="w-14 h-14 rounded-full bg-[#3A00FF] hover:bg-indigo-700 shadow-lg p-0"
+            aria-label="Adicionar nova dieta"
+          >
+            <Plus className="h-6 w-6 text-white" />
+          </Button>
+        </Link>
+      )}
 
       <MobileNavbar />
     </div>
