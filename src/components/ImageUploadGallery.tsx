@@ -3,6 +3,7 @@ import { Plus, X, Image, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
+import { Label } from '@/components/ui/label'; // Importação corrigida
 
 interface ImageUploadGalleryProps {
   initialUrls?: string[];
