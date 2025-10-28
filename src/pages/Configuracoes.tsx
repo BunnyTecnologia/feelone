@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Shield, Mail, LogOut } from 'lucide-react';
+import { X, Shield, Mail, LogOut, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SettingsProfileCard from '@/components/SettingsProfileCard';
 import SettingsMenuItem from '@/components/SettingsMenuItem';
