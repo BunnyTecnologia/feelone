@@ -14,6 +14,7 @@ interface Trip {
   localizacao: string;
   descricao: string;
   data_viagem: string;
+  fotos_url: string[] | null;
 }
 
 const Viagens = () => {
@@ -36,7 +37,7 @@ const Viagens = () => {
 
       const { data, error } = await supabase
         .from('viagens')
-        .select('id, titulo, localizacao, descricao, data_viagem')
+        .select('id, titulo, localizacao, descricao, data_viagem, fotos_url') // Incluindo fotos_url
         .eq('user_id', user.id)
         .order('data_viagem', { ascending: false });
 
@@ -91,6 +92,7 @@ const Viagens = () => {
                 location={trip.localizacao}
                 description={trip.descricao}
                 date={new Date(trip.data_viagem).toLocaleDateString('pt-BR')}
+                imageUrls={trip.fotos_url} // Passando as URLs das fotos
               />
             ))}
           </div>

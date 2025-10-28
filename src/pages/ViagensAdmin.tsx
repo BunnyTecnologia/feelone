@@ -9,6 +9,8 @@ import CustomInput from '@/components/CustomInput';
 import CustomTextarea from '@/components/CustomTextarea';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
+import ImageUploadGallery from '@/components/ImageUploadGallery';
+import { useStorageUpload } from '@/hooks/useStorageUpload';
 
 interface Trip {
   id: string;
@@ -16,6 +18,7 @@ interface Trip {
   localizacao: string;
   descricao: string;
   data_viagem: string;
+  fotos_url: string[] | null; // Nova coluna
 }
 
 const ViagensAdmin = () => {
@@ -25,6 +28,10 @@ const ViagensAdmin = () => {
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentTrip, setCurrentTrip] = useState<Partial<Trip> | null>(null);
+  const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const { uploadFile } = useStorageUpload('viagens_fotos', 'viagens/');
 
   // Efeito para verificar o estado de navegação e abrir o modal
   useEffect(() => {
@@ -45,7 +52,7 @@ const ViagensAdmin = () => {
 
     const { data, error } = await supabase
       .from('viagens')
-      .select('id, titulo, localizacao, descricao, data_viagem')
+      .select('id, titulo, localizacao, descricao, data_viagem, fotos_url') // Incluindo fotos_url
       .eq('user_id', user.id)
       .order('data_viagem', { ascending: false });
 
@@ -71,12 +78,34 @@ const ViagensAdmin = () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
+    setIsUploading(true);
+    let uploadedUrls: string[] = currentTrip.fotos_url || [];
+
+    // 1. Upload de novas imagens
+    if (filesToUpload.length > 0) {
+      const uploadPromises = filesToUpload.map(file => {
+        const fileName = `${user.id}/${Date.now()}_${file.name}`;
+        return uploadFile(file, fileName);
+      });
+
+      const results = await Promise.all(uploadPromises);
+      const successfulUrls = results.map(r => r.url).filter((url): url is string => !!url);
+      
+      uploadedUrls = [...uploadedUrls, ...successfulUrls];
+
+      if (successfulUrls.length !== filesToUpload.length) {
+        toast({ title: "Aviso", description: "Algumas imagens falharam no upload.", variant: "destructive" });
+      }
+    }
+    
+    // 2. Salvar dados no DB
     const payload = {
       user_id: user.id,
       titulo: currentTrip.titulo,
       localizacao: currentTrip.localizacao,
       descricao: currentTrip.descricao || '',
       data_viagem: currentTrip.data_viagem,
+      fotos_url: uploadedUrls,
     };
 
     let error = null;
@@ -96,18 +125,24 @@ const ViagensAdmin = () => {
       error = insertError;
     }
 
+    setIsUploading(false);
+
     if (error) {
       toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Sucesso", description: "Viagem salva com sucesso.", });
       setIsDialogOpen(false);
       setCurrentTrip(null);
+      setFilesToUpload([]);
       fetchTrips();
     }
   };
 
   const handleDelete = async (id: string) => {
     if (!window.confirm("Tem certeza que deseja deletar esta viagem?")) return;
+
+    // Nota: A exclusão de arquivos do storage deve ser tratada separadamente, 
+    // mas por simplicidade, focamos apenas na exclusão do registro do DB.
 
     const { error } = await supabase
       .from('viagens')
@@ -124,11 +159,13 @@ const ViagensAdmin = () => {
 
   const openEditDialog = (trip: Trip) => {
     setCurrentTrip(trip);
+    setFilesToUpload([]); // Limpa arquivos pendentes
     setIsDialogOpen(true);
   };
 
   const openNewDialog = () => {
-    setCurrentTrip({ titulo: '', localizacao: '', descricao: '', data_viagem: '' });
+    setCurrentTrip({ titulo: '', localizacao: '', descricao: '', data_viagem: '', fotos_url: [] });
+    setFilesToUpload([]);
     setIsDialogOpen(true);
   };
 
@@ -206,6 +243,15 @@ const ViagensAdmin = () => {
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSave} className="grid gap-4 py-4">
+            
+            {/* Galeria de Imagens */}
+            <ImageUploadGallery 
+              initialUrls={currentTrip?.fotos_url || []}
+              onFilesChange={setFilesToUpload}
+              maxFiles={5}
+              maxFileSizeMB={10}
+            />
+
             <div className="space-y-2">
               <Label htmlFor="titulo">Título</Label>
               <CustomInput
@@ -245,10 +291,15 @@ const ViagensAdmin = () => {
             
             <DialogFooter className="pt-4">
               <DialogClose asChild>
-                <Button type="button" variant="outline">Cancelar</Button>
+                <Button type="button" variant="outline" disabled={isUploading}>Cancelar</Button>
               </DialogClose>
-              <Button type="submit" className="bg-[#3A00FF] hover:bg-indigo-700">
-                Salvar
+              <Button type="submit" className="bg-[#3A00FF] hover:bg-indigo-700" disabled={isUploading}>
+                {isUploading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Salvando...
+                  </>
+                ) : 'Salvar'}
               </Button>
             </DialogFooter>
           </form>
