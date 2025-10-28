@@ -3,6 +3,7 @@ import { Instagram, Facebook, MessageSquare, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileNavbar from '@/components/MobileNavbar';
 import SocialIconLink from '@/components/SocialIconLink';
+import { Button } from '@/components/ui/button';
 
 const Perfil = () => {
   // Dados de exemplo
@@ -52,7 +53,7 @@ const Perfil = () => {
         </p>
 
         {/* Links de Redes Sociais */}
-        <div className="flex justify-center space-x-6 mb-12">
+        <div className="flex justify-center space-x-6 mb-8">
           <SocialIconLink 
             icon={Instagram} 
             to="#" 
@@ -69,6 +70,24 @@ const Perfil = () => {
             colorClass="text-[#3A00FF]" 
           />
         </div>
+
+        {/* Grade de Acessos Rápidos */}
+        <section aria-label="Acessos rápidos" className="mb-12">
+          <div className="grid grid-cols-2 gap-3">
+            {featureItems.map((item) => (
+              <Button
+                key={item.path}
+                variant="outline"
+                className="w-full h-12 rounded-xl border-[#3A00FF] text-[#3A00FF] hover:bg-[#3A00FF] hover:text-white transition-colors"
+                asChild
+              >
+                <Link to={item.path}>
+                  {item.name}
+                </Link>
+              </Button>
+            ))}
+          </div>
+        </section>
 
         {/* Logo do Patrocinador */}
         <div className="w-full flex justify-center">
