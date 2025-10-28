@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, Trash2, Edit, Dumbbell } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
@@ -20,10 +20,20 @@ interface Workout {
 
 const AcademiaAdmin = () => {
   const { toast } = useToast();
+  const location = useLocation();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentWorkout, setCurrentWorkout] = useState<Partial<Workout> | null>(null);
+
+  // Efeito para verificar o estado de navegação e abrir o modal
+  useEffect(() => {
+    if (location.state && (location.state as { openNew?: boolean }).openNew) {
+      openNewDialog();
+      // Limpa o estado para que o modal não abra novamente ao recarregar a página
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const fetchWorkouts = async () => {
     setLoading(true);
