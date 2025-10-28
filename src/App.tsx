@@ -6,12 +6,12 @@ import CadastroDadosPessoais from './pages/CadastroDadosPessoais';
 import CadastroRedesSociais from './pages/CadastroRedesSociais';
 import CadastroEndereco from './pages/CadastroEndereco';
 import DadosSaude from './pages/DadosSaude';
-import ContatoEmergencia from './pages/ContatoEmergencia';
+import ContatoDeEmergencia from './pages/ContatoDeEmergencia'; // Importação corrigida
 import Configuracoes from './pages/Configuracoes';
 import MinhasInformacoes from './pages/MinhasInformacoes';
 import Perfil from './pages/Perfil';
 import Chat from './pages/Chat';
-import PainelAdministrativo from './pages/PainelAdministrativo'; // Importando o novo componente
+import PainelAdministrativo from './pages/PainelAdministrativo';
 import { SessionContextProvider } from './integrations/supabase/session-context';
 import { Toaster } from './components/ui/toaster';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -40,7 +40,7 @@ function App() {
               <Route path="/cadastro/redes-sociais" element={<CadastroRedesSociais />} />
               <Route path="/cadastro/endereco" element={<CadastroEndereco />} />
               <Route path="/dados-saude" element={<DadosSaude />} />
-              <Route path="/contato-emergencia" element={<ContatoEmergencia />} />
+              <Route path="/contato-emergencia" element={<ContatoDeEmergencia />} /> {/* Rota corrigida */}
               
               {/* Rotas de Gerenciamento (A serem criadas) */}
               <Route path="/gerenciar/dieta" element={<div>Gerenciar Dieta (TODO)</div>} />
