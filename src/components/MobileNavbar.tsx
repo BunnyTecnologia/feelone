@@ -23,6 +23,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon, to, isActive }) => (
 
 const MobileNavbar = () => {
   const location = useLocation();
+  // A rota raiz é a Home, que agora usa o HomeRedirect
   const currentPath = location.pathname; 
 
   return (

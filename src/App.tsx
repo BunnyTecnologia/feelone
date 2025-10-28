@@ -27,6 +27,7 @@ import AgendaAdmin from "./pages/AgendaAdmin";
 import Enquetes from "./pages/Enquetes"; // Nova página de visualização
 import EnqueteAdmin from "./pages/EnqueteAdmin"; // Nova página de administração
 import Chat from "./pages/Chat"; // Nova página de Chat
+import HomeRedirect from "./pages/HomeRedirect"; // Novo componente de redirecionamento
 
 const queryClient = new QueryClient();
 
@@ -37,7 +38,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} /> {/* Rota raiz agora aponta para Login */}
+          <Route path="/" element={<HomeRedirect />} /> {/* Rota raiz agora usa o redirecionador */}
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro/dados-pessoais" element={<CadastroDadosPessoais />} />
           <Route path="/cadastro/redes-sociais" element={<CadastroRedesSociais />} />
