@@ -23,7 +23,6 @@ const NavItem: React.FC<NavItemProps> = ({ icon, to, isActive }) => (
 
 const MobileNavbar = () => {
   const location = useLocation();
-  // A rota raiz é a Home, que agora usa o HomeRedirect
   const currentPath = location.pathname; 
 
   return (
@@ -50,7 +49,7 @@ const MobileNavbar = () => {
           {/* Lado Esquerdo */}
           <div className="flex w-2/5 justify-around">
             <NavItem to="/" isActive={currentPath === "/"} icon={<Home className="h-6 w-6" />} />
-            <NavItem to="/minhas-informacoes" isActive={currentPath === "/minhas-informacoes"} icon={<FileText className="h-6 w-6" />} />
+            <NavItem to="/noticias" isActive={currentPath === "/noticias"} icon={<FileText className="h-6 w-6" />} />
           </div>
 
           {/* Espaço para o botão central */}

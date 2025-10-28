@@ -28,6 +28,8 @@ import Enquetes from "./pages/Enquetes"; // Nova página de visualização
 import EnqueteAdmin from "./pages/EnqueteAdmin"; // Nova página de administração
 import Chat from "./pages/Chat"; // Nova página de Chat
 import HomeRedirect from "./pages/HomeRedirect"; // Novo componente de redirecionamento
+import Noticias from "./pages/Noticias"; // Nova página de Notícias
+import NoticiasAdmin from "./pages/NoticiasAdmin"; // Nova página de Admin Notícias
 
 const queryClient = new QueryClient();
 
@@ -63,6 +65,8 @@ const App = () => (
           <Route path="/admin/agenda" element={<AgendaAdmin />} />
           <Route path="/enquetes" element={<Enquetes />} />
           <Route path="/admin/enquetes" element={<EnqueteAdmin />} />
+          <Route path="/noticias" element={<Noticias />} />
+          <Route path="/admin/noticias" element={<NoticiasAdmin />} />
           
           {/* Rotas de Chat */}
           <Route path="/chat" element={<Chat />} />
