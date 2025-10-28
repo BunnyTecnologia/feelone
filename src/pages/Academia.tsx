@@ -16,7 +16,7 @@ interface Workout {
   duracao_dias: number;
 }
 
-const Treino = () => {
+const Academia = () => {
   const { toast } = useToast();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +65,7 @@ const Treino = () => {
             <ArrowLeft className="text-[#3A00FF] h-6 w-6" />
           </Link>
           <h1 className="text-3xl font-bold text-[#3A00FF]">
-            Minhas Séries de Treino
+            Minhas Séries
           </h1>
         </div>
       </header>
@@ -118,4 +118,4 @@ const Treino = () => {
   );
 };
 
-export default Treino;
+export default Academia;
