@@ -6,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import CustomTextarea from '@/components/CustomTextarea';
 import HealthToggle from '@/components/HealthToggle';
-import MobileNavbar from '@/components/MobileNavbar';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -170,7 +169,7 @@ const DadosSaude = () => {
         </form>
 
         {/* Patrocinador Logo Placeholder (Baseado na imagem) */}
-        <div className="mt-12 w-full flex justify-center pb-28">
+        <div className="mt-12 w-full flex justify-center pb-8"> {/* Reduzi o padding inferior aqui */}
           <div className="text-center">
             <span className="text-5xl font-extrabold leading-none text-blue-900 dark:text-blue-400">
               <span className="text-green-500">E</span>sportes
@@ -180,9 +179,6 @@ const DadosSaude = () => {
           </div>
         </div>
       </div>
-
-      {/* Navbar Móvel */}
-      <MobileNavbar />
     </div>
   );
 };
