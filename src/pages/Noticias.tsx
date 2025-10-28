@@ -82,6 +82,7 @@ const Noticias = () => {
             {news.map((item) => (
               <NewsCard 
                 key={item.id}
+                id={item.id} // Passando o ID
                 title={item.titulo}
                 summary={item.resumo}
                 author={item.autor || 'Administrador'}
