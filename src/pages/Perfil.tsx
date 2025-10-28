@@ -15,7 +15,7 @@ const Perfil = () => {
     { name: "Dieta", path: "/dieta" }, 
     { name: "Academia", path: "/academia" }, 
     { name: "Enquete", path: "#" }, 
-    { name: "Viagens", path: "#" }, 
+    { name: "Viagens", path: "/viagens" }, 
     { name: "Chat", path: "#" }, 
     { name: "Agenda", path: "#" }
   ];
@@ -25,9 +25,8 @@ const Perfil = () => {
       
       {/* Botão de Admin/Configurações no topo */}
       <header className="w-full max-w-sm md:max-w-md pt-4 px-4 flex justify-end">
-        {/* Por enquanto, o botão de admin leva para o admin de dieta. 
-           No futuro, podemos criar um painel de admin centralizado. */}
-        <Link to="/admin/academia" className="text-[#3A00FF] hover:opacity-80 transition-opacity">
+        {/* O botão de admin agora leva para o admin de Viagens, seguindo o último recurso implementado. */}
+        <Link to="/admin/viagens" className="text-[#3A00FF] hover:opacity-80 transition-opacity">
           <Settings className="h-6 w-6" />
         </Link>
       </header>

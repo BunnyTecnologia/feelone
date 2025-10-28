@@ -18,8 +18,10 @@ import CarteirinhaDeEmergencia from "./pages/CarteirinhaDeEmergencia";
 import DadosSaude from "./pages/DadosSaude";
 import Dieta from "./pages/Dieta";
 import DietaAdmin from "./pages/DietaAdmin";
-import Academia from "./pages/Academia"; // Nova página de visualização
-import AcademiaAdmin from "./pages/AcademiaAdmin"; // Nova página de administração
+import Academia from "./pages/Academia";
+import AcademiaAdmin from "./pages/AcademiaAdmin";
+import Viagens from "./pages/Viagens"; // Nova página de visualização
+import ViagensAdmin from "./pages/ViagensAdmin"; // Nova página de administração
 
 const queryClient = new QueryClient();
 
@@ -49,6 +51,8 @@ const App = () => (
           <Route path="/admin/dieta" element={<DietaAdmin />} />
           <Route path="/academia" element={<Academia />} />
           <Route path="/admin/academia" element={<AcademiaAdmin />} />
+          <Route path="/viagens" element={<Viagens />} />
+          <Route path="/admin/viagens" element={<ViagensAdmin />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
