@@ -8,6 +8,7 @@ import NewGroupDialog from '@/components/NewGroupDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils'; // Importação adicionada
 
 interface Group {
   id: string;
