@@ -7,14 +7,14 @@ const pages = [
   { name: "Cadastro Dados Pessoais", path: "/cadastro/dados-pessoais" },
   { name: "Cadastro Redes Sociais", path: "/cadastro/redes-sociais" },
   { name: "Cadastro Endereço", path: "/cadastro/endereco" },
-  { name: "Dados de Saúde", path: "/dados-saude" },
+  { name: "Carteirinha de Emergência (Dados de Saúde)", path: "/dados-saude" },
   { name: "Contato de Emergência", path: "/contato-emergencia" },
   { name: "Configurações", path: "/configuracoes" },
   { name: "Minhas Informações", path: "/minhas-informacoes" },
   { name: "Perfil", path: "/perfil" },
   { name: "Landing Page Home (Desktop)", path: "/landing-page" },
   { name: "Dashboard (Desktop)", path: "/dashboard" },
-  { name: "Carteirinha de Emergência", path: "/carteirinha-emergencia" },
+  { name: "Carteirinha de Emergência (Rota Secundária)", path: "/carteirinha-emergencia" },
 ];
 
 const Index = () => {

@@ -9,7 +9,6 @@ import Login from "./pages/Login";
 import CadastroDadosPessoais from "./pages/CadastroDadosPessoais";
 import CadastroRedesSociais from "./pages/CadastroRedesSociais";
 import CadastroEndereco from "./pages/CadastroEndereco";
-import DadosDeSaude from "./pages/DadosDeSaude";
 import ContatoDeEmergencia from "./pages/ContatoDeEmergencia";
 import Configuracoes from "./pages/Configuracoes";
 import MinhasInformacoes from "./pages/MinhasInformacoes";
@@ -32,7 +31,7 @@ const App = () => (
           <Route path="/cadastro/dados-pessoais" element={<CadastroDadosPessoais />} />
           <Route path="/cadastro/redes-sociais" element={<CadastroRedesSociais />} />
           <Route path="/cadastro/endereco" element={<CadastroEndereco />} />
-          <Route path="/dados-saude" element={<DadosDeSaude />} />
+          <Route path="/dados-saude" element={<CarteirinhaDeEmergencia />} /> {/* Rota antiga agora aponta para a nova página */}
           <Route path="/contato-emergencia" element={<ContatoDeEmergencia />} />
           <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="/minhas-informacoes" element={<MinhasInformacoes />} />
