@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const MinhasInformacoes = () => {
@@ -10,7 +10,7 @@ const MinhasInformacoes = () => {
   const menuItems = [
     { title: "Redes Sociais", path: "/cadastro/redes-sociais" },
     { title: "Endereço", path: "/cadastro/endereco" },
-    { title: "Dados de Saúde", path: "/dados-saude" },
+    { title: "Dados de Saúde", path: "/dados-saude" }, // Rota corrigida
     { title: "Contatos de Emergência", path: "/contato-emergencia" },
   ];
 

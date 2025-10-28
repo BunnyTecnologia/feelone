@@ -15,6 +15,7 @@ import Perfil from "./pages/Perfil";
 import LandingPageHome from "./pages/LandingPageHome";
 import Dashboard from "./pages/Dashboard";
 import CarteirinhaDeEmergencia from "./pages/CarteirinhaDeEmergencia";
+import DadosSaude from "./pages/DadosSaude"; // Importando a nova página
 
 const queryClient = new QueryClient();
 
@@ -30,7 +31,7 @@ const App = () => (
           <Route path="/cadastro/dados-pessoais" element={<CadastroDadosPessoais />} />
           <Route path="/cadastro/redes-sociais" element={<CadastroRedesSociais />} />
           <Route path="/cadastro/endereco" element={<CadastroEndereco />} />
-          <Route path="/dados-saude" element={<CarteirinhaDeEmergencia />} />
+          <Route path="/dados-saude" element={<DadosSaude />} /> {/* Rota para o formulário de saúde */}
           <Route path="/contato-emergencia" element={<ContatoDeEmergencia />} />
           <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="/minhas-informacoes" element={<MinhasInformacoes />} />
