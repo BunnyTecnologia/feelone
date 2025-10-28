@@ -4,8 +4,17 @@ import { Link } from 'react-router-dom';
 import SettingsProfileCard from '@/components/SettingsProfileCard';
 import SettingsMenuItem from '@/components/SettingsMenuItem';
 import MobileNavbar from '@/components/MobileNavbar';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 const Configuracoes = () => {
+  const [openPersonalizacao, setOpenPersonalizacao] = React.useState(false);
+
+  const handlePersonalizacaoClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault();
+    setOpenPersonalizacao(true);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       
@@ -43,12 +52,13 @@ const Configuracoes = () => {
           <SettingsMenuItem 
             icon={Mail} 
             title="Personalização" 
-            to="#" // Rota temporária
+            to="#" 
+            onClick={handlePersonalizacaoClick}
           />
           <SettingsMenuItem 
             icon={FileText} 
             title="Política de Privacidade" 
-            to="/politica-privacidade" // Rota corrigida
+            to="/politica-privacidade" 
           />
         </div>
 
@@ -60,6 +70,30 @@ const Configuracoes = () => {
           isLogout 
         />
       </main>
+
+      {/* Dialog de Personalização - Em breve */}
+      <Dialog open={openPersonalizacao} onOpenChange={setOpenPersonalizacao}>
+        <DialogContent className="sm:max-w-[420px] rounded-2xl">
+          <DialogHeader className="items-center">
+            <img
+              src="/logo-feel-one.png"
+              alt="Feel One"
+              className="h-12 mb-2"
+            />
+            <DialogTitle className="text-[#3A00FF] text-center">Em breve</DialogTitle>
+            <DialogDescription className="text-center">
+              Esta função será entregue na versão definitiva do aplicativo Feel One.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-center">
+            <DialogClose asChild>
+              <Button className="bg-[#3A00FF] hover:bg-indigo-700 text-white">
+                Entendi
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Navbar Móvel */}
       <MobileNavbar />
