@@ -1,5 +1,5 @@
 import React from 'react';
-import { Instagram, Facebook, MessageSquare, Settings } from 'lucide-react';
+import { Instagram, Facebook, Whatsapp, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileNavbar from '@/components/MobileNavbar';
 import SocialIconLink from '@/components/SocialIconLink';
@@ -84,7 +84,7 @@ const Perfil = () => {
             colorClass="text-[#3A00FF] fill-[#3A00FF]" 
           />
           <SocialIconLink 
-            icon={MessageSquare}
+            icon={Whatsapp}
             to="/chat"
             colorClass="text-[#3A00FF]" 
           />
