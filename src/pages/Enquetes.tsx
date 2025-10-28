@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { ArrowLeft, HelpCircle } from 'lucide-react';
+import { ArrowLeft, HelpCircle, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileNavbar from '@/components/MobileNavbar';
 import PollCard from '@/components/PollCard';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 
 interface Option {
   id: string;
@@ -26,11 +27,13 @@ const Enquetes = () => {
   const [pollsData, setPollsData] = useState<PollData[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   useEffect(() => {
     const getUserId = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUserId(user?.id || null);
+      setIsUserLoggedIn(!!user);
     };
     getUserId();
   }, []);
@@ -161,6 +164,22 @@ const Enquetes = () => {
           </div>
         )}
       </main>
+
+      {/* Floating Action Button (FAB) - Adicionar Enquete */}
+      {isUserLoggedIn && (
+        <Link 
+          to="/admin/enquetes" 
+          state={{ openNew: true }} // Adiciona o estado para abrir o modal
+          className="fixed bottom-24 left-6 z-40"
+        >
+          <Button 
+            className="w-14 h-14 rounded-full bg-[#3A00FF] hover:bg-indigo-700 shadow-lg p-0"
+            aria-label="Adicionar nova enquete"
+          >
+            <Plus className="h-6 w-6 text-white" />
+          </Button>
+        </Link>
+      )}
 
       <MobileNavbar />
     </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, Trash2, Edit, HelpCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
@@ -23,11 +23,21 @@ interface Poll {
 
 const EnqueteAdmin = () => {
   const { toast } = useToast();
+  const location = useLocation();
   const [polls, setPolls] = useState<Poll[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPoll, setCurrentPoll] = useState<Partial<Poll> | null>(null);
   const [newOptionText, setNewOptionText] = useState('');
+
+  // Efeito para verificar o estado de navegação e abrir o modal
+  useEffect(() => {
+    if (location.state && (location.state as { openNew?: boolean }).openNew) {
+      openNewDialog();
+      // Limpa o estado para que o modal não abra novamente ao recarregar a página
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const fetchPolls = async () => {
     setLoading(true);

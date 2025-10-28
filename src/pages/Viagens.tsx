@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, Plane } from 'lucide-react';
+import { ArrowLeft, Plane, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileNavbar from '@/components/MobileNavbar';
 import TripCard from '@/components/TripCard';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 
 interface Trip {
   id: string;
@@ -19,14 +20,19 @@ const Viagens = () => {
   const { toast } = useToast();
   const [trips, setTrips] = useState<Trip[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchTrips = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+      
       if (!user) {
         setLoading(false);
+        setIsUserLoggedIn(false);
         return;
       }
+      
+      setIsUserLoggedIn(true);
 
       const { data, error } = await supabase
         .from('viagens')
@@ -90,6 +96,22 @@ const Viagens = () => {
           </div>
         )}
       </main>
+
+      {/* Floating Action Button (FAB) - Adicionar Viagem */}
+      {isUserLoggedIn && (
+        <Link 
+          to="/admin/viagens" 
+          state={{ openNew: true }} // Adiciona o estado para abrir o modal
+          className="fixed bottom-24 left-6 z-40"
+        >
+          <Button 
+            className="w-14 h-14 rounded-full bg-[#3A00FF] hover:bg-indigo-700 shadow-lg p-0"
+            aria-label="Adicionar nova viagem"
+          >
+            <Plus className="h-6 w-6 text-white" />
+          </Button>
+        </Link>
+      )}
 
       <MobileNavbar />
     </div>

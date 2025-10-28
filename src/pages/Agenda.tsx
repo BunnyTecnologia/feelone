@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, CalendarCheck, Clock } from 'lucide-react';
+import { ArrowLeft, CalendarCheck, Clock, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileNavbar from '@/components/MobileNavbar';
 import { supabase } from '@/integrations/supabase/client';
@@ -40,15 +40,18 @@ const Agenda = () => {
   // ID do dono do perfil (Hardcoded para o exemplo, em um app real viria da rota/slug)
   // Usaremos o ID do usuário logado para buscar a disponibilidade dele mesmo, por enquanto.
   const [ownerId, setOwnerId] = useState<string | null>(null); 
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchOwnerId = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setOwnerId(user.id);
+        setIsUserLoggedIn(true);
         fetchAvailability(user.id);
       } else {
         setLoading(false);
+        setIsUserLoggedIn(false);
       }
     };
     fetchOwnerId();
@@ -200,6 +203,22 @@ const Agenda = () => {
           </div>
         )}
       </main>
+
+      {/* Floating Action Button (FAB) - Gerenciar Agenda */}
+      {isUserLoggedIn && (
+        <Link 
+          to="/admin/agenda" 
+          state={{ openNew: true }} // Adiciona o estado para abrir o modal (embora aqui seja apenas para ir para a página admin)
+          className="fixed bottom-24 left-6 z-40"
+        >
+          <Button 
+            className="w-14 h-14 rounded-full bg-[#3A00FF] hover:bg-indigo-700 shadow-lg p-0"
+            aria-label="Gerenciar Agenda"
+          >
+            <Plus className="h-6 w-6 text-white" />
+          </Button>
+        </Link>
+      )}
 
       <MobileNavbar />
 
