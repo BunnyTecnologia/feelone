@@ -143,7 +143,7 @@ const AcademiaAdmin = () => {
               <ArrowLeft className="text-[#3A00FF] h-6 w-6" />
             </Link>
             <h1 className="text-3xl font-bold text-[#3A00FF]">
-              Admin Academia
+              Admin Treinos
             </h1>
           </div>
           <Button 
