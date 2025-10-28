@@ -70,24 +70,14 @@ const Perfil = () => {
           />
         </div>
 
-        {/* Menu de Funcionalidades */}
-        <div className="grid grid-cols-3 gap-y-8 mb-16">
-          {featureItems.map((item) => (
-            <Link key={item.name} to={item.path} className="text-lg font-bold text-[#3A00FF] hover:opacity-80 transition-opacity">
-              {item.name}
-            </Link>
-          ))}
-        </div>
-
-        {/* Patrocinador Logo Placeholder */}
+        {/* Logo do Patrocinador */}
         <div className="w-full flex justify-center">
           <div className="text-center">
-            {/* Placeholder para o logo 'Esportes da Sorte' */}
-            <span className="text-7xl font-extrabold leading-none text-blue-900 dark:text-blue-400">
-              <span className="text-green-500">E</span>sportes
-              <br />
-              da Sorte
-            </span>
+            <img
+              src="/esportes-da-sorte-seeklogo.png"
+              alt="Logo Esportes da Sorte"
+              className="h-20 md:h-24 object-contain mx-auto"
+            />
           </div>
         </div>
       </main>
