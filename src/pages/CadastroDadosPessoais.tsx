@@ -152,9 +152,15 @@ const CadastroDadosPessoais = () => {
 
     let avatarUrl: string | null = profile?.avatar_url || null;
 
-    // 2. Upload da Imagem (se houver um novo arquivo)
+    // 2. Upload da Imagem (se houver um novo arquivo) – preserva extensão original
     if (avatarFile) {
-      const fileName = `${currentUserId}/${Date.now()}_avatar.jpg`;
+      const originalExt = (() => {
+        const name = avatarFile.name;
+        const parts = name.split('.');
+        return parts.length > 1 ? parts.pop()!.toLowerCase() : 'jpg';
+      })();
+
+      const fileName = `${currentUserId}/${Date.now()}_avatar.${originalExt}`;
       const { url, error } = await uploadFile(avatarFile, fileName);
       
       if (error) {
