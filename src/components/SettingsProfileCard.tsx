@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Link } from 'react-router-dom';
+import { useProfileData } from '@/hooks/useProfileData';
 
 interface SettingsProfileCardProps {
   name: string;
@@ -16,7 +17,14 @@ const getFirstAndLast = (fullName: string) => {
 };
 
 const SettingsProfileCard: React.FC<SettingsProfileCardProps> = ({ name, avatarUrl, to }) => {
-  const displayName = getFirstAndLast(name);
+  const { profile } = useProfileData();
+
+  const dbFullName = [profile?.first_name, profile?.last_name].filter(Boolean).join(' ').trim();
+  const displayName = dbFullName || getFirstAndLast(name);
+  const initialsSource = (dbFullName || name || '').trim();
+  const initials = initialsSource
+    ? initialsSource.split(/\s+/).map(n => n[0]).join('').toUpperCase().slice(0, 2)
+    : '';
 
   return (
     <Link 
@@ -24,9 +32,9 @@ const SettingsProfileCard: React.FC<SettingsProfileCardProps> = ({ name, avatarU
       className="bg-[#3A00FF] p-4 rounded-xl shadow-lg flex items-center space-x-4 hover:bg-indigo-700 transition-colors"
     >
       <Avatar className="h-16 w-16 border-2 border-white">
-        <AvatarImage src={avatarUrl} alt={name} />
+        <AvatarImage src={avatarUrl} alt={displayName || 'Usuário'} />
         <AvatarFallback className="bg-white text-[#3A00FF] font-bold text-xl">
-          {name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+          {initials}
         </AvatarFallback>
       </Avatar>
       <span className="text-xl font-bold text-white truncate">{displayName}</span>
