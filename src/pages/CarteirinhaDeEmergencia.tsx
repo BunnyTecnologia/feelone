@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, ShoppingCart, User, Phone } from 'lucide-react';
+import { ArrowLeft, Settings, User, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileNavbar from '@/components/MobileNavbar';
 import HealthDataItem from '@/components/HealthDataItem';
@@ -7,11 +7,6 @@ import { useProfileData } from '@/hooks/useProfileData';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const CarteirinhaDeEmergencia = () => {
-  // Cores e estilos baseados na imagem
-  const primaryColor = "#3A00FF";
-  const secondaryColor = "#D9D0FF"; // Lilás claro para o fundo do card
-  const titleColor = "#D93A3A"; // Vermelho para os títulos das seções
-
   const { profile, loading } = useProfileData();
 
   const displayName = profile
@@ -37,18 +32,20 @@ const CarteirinhaDeEmergencia = () => {
   const avatarUrl = profile?.avatar_url || null;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       
-      {/* Header */}
-      <header className="w-full max-w-sm md:max-w-md mx-auto pt-4 pb-8 px-4">
+      {/* Header com setas e engrenagem, mantendo acento roxo */}
+      <header className="w-full max-w-sm md:max-w-md mx-auto pt-4 pb-6 px-4">
         <div className="flex justify-between items-center">
           <Link to="/">
-            <ArrowLeft className="text-primaryColor h-6 w-6" style={{ color: primaryColor }} />
+            <ArrowLeft className="h-6 w-6 text-[#3A00FF]" />
           </Link>
-          <h1 className="text-xl font-bold" style={{ color: primaryColor }}>
+          <h1 className="text-xl font-bold text-[#3A00FF]">
             Carteirinha de Emergência
           </h1>
-          <ShoppingCart className="text-primaryColor h-6 w-6" style={{ color: primaryColor }} />
+          <Link to="/admin/menu">
+            <Settings className="h-6 w-6 text-[#3A00FF]" />
+          </Link>
         </div>
       </header>
 
@@ -57,12 +54,9 @@ const CarteirinhaDeEmergencia = () => {
         
         {/* Avatar e Nome */}
         <div className="mb-8">
-          <div 
-            className="w-28 h-28 rounded-full mx-auto flex items-center justify-center mb-3 overflow-hidden"
-            style={{ backgroundColor: secondaryColor, border: `2px solid ${primaryColor}` }}
-          >
+          <div className="w-32 h-32 rounded-full mx-auto mb-3 overflow-hidden shadow-xl border-4 border-white">
             {loading ? (
-              <Skeleton className="w-24 h-24 rounded-full" />
+              <Skeleton className="w-32 h-32 rounded-full" />
             ) : avatarUrl ? (
               <img
                 src={avatarUrl}
@@ -70,7 +64,9 @@ const CarteirinhaDeEmergencia = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <User className="h-16 w-16" style={{ color: primaryColor }} />
+              <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                <User className="h-16 w-16 text-[#3A00FF]" />
+              </div>
             )}
           </div>
 
@@ -81,24 +77,21 @@ const CarteirinhaDeEmergencia = () => {
             </>
           ) : (
             <>
-              <h2 className="text-3xl font-bold mb-1" style={{ color: primaryColor }}>
+              <h2 className="text-2xl font-bold mb-1 text-[#3A00FF]">
                 {displayName}
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-[#3A00FF] font-medium">
                 {subText}
               </p>
             </>
           )}
         </div>
 
-        {/* Card de Dados de Saúde e Contato */}
-        <div 
-          className="p-6 rounded-3xl text-left shadow-lg"
-          style={{ backgroundColor: secondaryColor }}
-        >
+        {/* Card branco com borda roxa, cantos arredondados e sombra leve */}
+        <div className="p-6 rounded-2xl text-left shadow-lg border-2 border-[#3A00FF] bg-white">
           
           {/* Dados de Saúde */}
-          <h3 className="text-xl font-bold mb-4" style={{ color: titleColor }}>
+          <h3 className="text-lg font-bold mb-4 text-[#3A00FF]">
             Dados de Saúde
           </h3>
 
@@ -122,19 +115,19 @@ const CarteirinhaDeEmergencia = () => {
               </div>
             </div>
           ) : (
-            <>
+            <div className="space-y-3">
               <HealthDataItem title="Tipo Sanguíneo" value={tipoSanguineo} isBoldValue />
               <HealthDataItem title="Alergias" value={alergias} isBoldValue />
               <HealthDataItem title="Doenças Crônicas" value={doencasCronicas} isBoldValue />
               <HealthDataItem title="Medicamentos em Uso" value={medicamentosUso} isBoldValue />
-            </>
+            </div>
           )}
 
           {/* Separador visual */}
-          <div className="h-px bg-gray-300 my-6"></div>
+          <div className="h-px bg-gray-200 my-6"></div>
 
           {/* Contato de Emergência */}
-          <h3 className="text-xl font-bold mb-4" style={{ color: titleColor }}>
+          <h3 className="text-lg font-bold mb-4 text-[#3A00FF]">
             Contato de Emergência
           </h3>
 
@@ -152,11 +145,11 @@ const CarteirinhaDeEmergencia = () => {
           ) : (
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Nome</p>
+                <p className="text-sm text-[#3A00FF] mb-1">Nome</p>
                 <p className="text-[#3A00FF] font-bold text-lg">{emergenciaNome}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Telefone</p>
+                <p className="text-sm text-[#3A00FF] mb-1">Telefone</p>
                 <div className="flex items-center space-x-2 text-[#3A00FF] font-bold text-lg">
                   <Phone className="h-5 w-5" />
                   <span>{emergenciaTelefone}</span>
@@ -164,6 +157,15 @@ const CarteirinhaDeEmergencia = () => {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Logo do Patrocinador (opcional, mantendo conceito da home) */}
+        <div className="w-full flex justify-center mt-10">
+          <img
+            src="/esportes-da-sorte-seeklogo.png"
+            alt="Logo Esportes da Sorte"
+            className="h-20 md:h-24 object-contain mx-auto"
+          />
         </div>
       </main>
 
