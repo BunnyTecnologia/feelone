@@ -23,9 +23,8 @@ const SettingsProfileCard: React.FC<SettingsProfileCardProps> = ({ name, avatarU
   const dbFullName = [profile?.first_name, profile?.last_name].filter(Boolean).join(' ').trim();
   const displayName = dbFullName || getFirstAndLast(name);
 
-  // Prioriza o avatar salvo no banco; se não houver, usa o passado por prop
-  const sourceForAvatar = profile?.avatar_url ?? avatarUrl ?? null;
-  const resolvedAvatar = useAvatarUrl(sourceForAvatar);
+  // Usa somente o avatar vindo do banco de dados
+  const resolvedAvatar = useAvatarUrl(profile?.avatar_url ?? null);
 
   const initialsSource = (dbFullName || name || '').trim();
   const initials = initialsSource
