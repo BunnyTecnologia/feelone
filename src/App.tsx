@@ -15,7 +15,9 @@ import Perfil from "./pages/Perfil";
 import LandingPageHome from "./pages/LandingPageHome";
 import Dashboard from "./pages/Dashboard";
 import CarteirinhaDeEmergencia from "./pages/CarteirinhaDeEmergencia";
-import DadosSaude from "./pages/DadosSaude"; // Importando a nova página
+import DadosSaude from "./pages/DadosSaude";
+import Dieta from "./pages/Dieta"; // Nova página de visualização
+import DietaAdmin from "./pages/DietaAdmin"; // Nova página de administração
 
 const queryClient = new QueryClient();
 
@@ -31,7 +33,7 @@ const App = () => (
           <Route path="/cadastro/dados-pessoais" element={<CadastroDadosPessoais />} />
           <Route path="/cadastro/redes-sociais" element={<CadastroRedesSociais />} />
           <Route path="/cadastro/endereco" element={<CadastroEndereco />} />
-          <Route path="/dados-saude" element={<DadosSaude />} /> {/* Rota para o formulário de saúde */}
+          <Route path="/dados-saude" element={<DadosSaude />} />
           <Route path="/contato-emergencia" element={<ContatoDeEmergencia />} />
           <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="/minhas-informacoes" element={<MinhasInformacoes />} />
@@ -39,6 +41,11 @@ const App = () => (
           <Route path="/landing-page" element={<LandingPageHome />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/carteirinha-emergencia" element={<CarteirinhaDeEmergencia />} />
+          
+          {/* Rotas de Funcionalidades */}
+          <Route path="/dieta" element={<Dieta />} />
+          <Route path="/admin/dieta" element={<DietaAdmin />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

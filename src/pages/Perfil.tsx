@@ -1,5 +1,5 @@
 import React from 'react';
-import { Instagram, Facebook, MessageSquare } from 'lucide-react';
+import { Instagram, Facebook, MessageSquare, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileNavbar from '@/components/MobileNavbar';
 import SocialIconLink from '@/components/SocialIconLink';
@@ -12,15 +12,26 @@ const Perfil = () => {
 
   // Itens do menu de funcionalidades
   const featureItems = [
-    "Dieta", "Academia", "Enquete", 
-    "Viagens", "Chat", "Agenda"
+    { name: "Dieta", path: "/dieta" }, 
+    { name: "Academia", path: "#" }, 
+    { name: "Enquete", path: "#" }, 
+    { name: "Viagens", path: "#" }, 
+    { name: "Chat", path: "#" }, 
+    { name: "Agenda", path: "#" }
   ];
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-white dark:bg-gray-900">
       
+      {/* Botão de Admin/Configurações no topo */}
+      <header className="w-full max-w-sm md:max-w-md pt-4 px-4 flex justify-end">
+        <Link to="/admin/dieta" className="text-[#3A00FF] hover:opacity-80 transition-opacity">
+          <Settings className="h-6 w-6" />
+        </Link>
+      </header>
+
       {/* Conteúdo Principal */}
-      <main className="flex-grow w-full max-w-sm md:max-w-md mx-auto px-4 pt-12 pb-28 text-center">
+      <main className="flex-grow w-full max-w-sm md:max-w-md mx-auto px-4 pt-4 pb-28 text-center">
         
         {/* Avatar */}
         <div className="mb-6">
@@ -61,8 +72,8 @@ const Perfil = () => {
         {/* Menu de Funcionalidades */}
         <div className="grid grid-cols-3 gap-y-8 mb-16">
           {featureItems.map((item) => (
-            <Link key={item} to="#" className="text-lg font-bold text-[#3A00FF] hover:opacity-80 transition-opacity">
-              {item}
+            <Link key={item.name} to={item.path} className="text-lg font-bold text-[#3A00FF] hover:opacity-80 transition-opacity">
+              {item.name}
             </Link>
           ))}
         </div>
