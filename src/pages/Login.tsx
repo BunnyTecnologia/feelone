@@ -1,15 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import CustomInput from '@/components/CustomInput';
+import CustomPasswordInput from '@/components/CustomPasswordInput';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/components/ui/use-toast';
 
 const Login = () => {
-  // Estilo customizado para o input com borda azul forte
-  const inputStyle = "border-2 border-blue-600 focus-visible:ring-blue-600 h-14 text-base placeholder:text-gray-500";
+  const navigate = useNavigate();
+  const { toast } = useToast();
   
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
   // Estilo customizado para o botão principal
   const buttonStyle = "bg-blue-900 hover:bg-blue-800 text-white h-14 text-lg font-semibold rounded-xl";
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      toast({
+        title: "Erro de Login",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Sucesso!",
+        description: "Login realizado com sucesso.",
+      });
+      // Redireciona para a página de perfil após o login
+      navigate('/perfil');
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-white dark:bg-gray-900 p-4">
@@ -38,16 +71,19 @@ const Login = () => {
         </h1>
 
         {/* Form */}
-        <form className="w-full space-y-4">
-          <Input 
+        <form onSubmit={handleLogin} className="w-full space-y-4">
+          <CustomInput 
             type="email" 
             placeholder="E-mail" 
-            className={inputStyle} 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-          <Input 
-            type="password" 
+          <CustomPasswordInput 
             placeholder="Senha" 
-            className={inputStyle} 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
 
           {/* Links de Lembrete/Esqueci */}
@@ -60,8 +96,8 @@ const Login = () => {
             </Link>
           </div>
 
-          <Button type="submit" className={`w-full ${buttonStyle}`}>
-            Entrar
+          <Button type="submit" className={`w-full ${buttonStyle}`} disabled={loading}>
+            {loading ? 'Entrando...' : 'Entrar'}
           </Button>
         </form>
 
