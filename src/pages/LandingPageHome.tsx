@@ -4,7 +4,7 @@ import RescueForm from '@/components/RescueForm';
 import SponsorsSection from '@/components/SponsorsSection';
 import { Button } from '@/components/ui/button';
 
-const Index = () => {
+const LandingPageHome = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <LandingHeader />
@@ -63,4 +63,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default LandingPageHome;
