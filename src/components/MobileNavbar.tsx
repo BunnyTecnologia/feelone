@@ -39,7 +39,7 @@ const MobileNavbar = () => {
 
         {/* Botão Central de Destaque (HeartPulse) */}
         <div className="absolute left-1/2 transform -translate-x-1/2 -top-8">
-          <Link to="/dados-saude" className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-xl border-4 border-white">
+          <Link to="/carteirinha-emergencia" className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-xl border-4 border-white">
             <HeartPulse className="h-8 w-8 text-white fill-white" />
           </Link>
         </div>
