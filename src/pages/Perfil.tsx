@@ -16,7 +16,7 @@ const Perfil = () => {
     { name: "Academia", path: "/academia" }, 
     { name: "Enquete", path: "/enquetes" }, 
     { name: "Viagens", path: "/viagens" }, 
-    { name: "Chat", path: "#" }, 
+    { name: "Chat", path: "/chat" }, // Rota corrigida para /chat
     { name: "Agenda", path: "/agenda" }
   ];
 
@@ -65,7 +65,7 @@ const Perfil = () => {
           />
           <SocialIconLink 
             icon={MessageSquare} // Substituído por MessageSquare
-            to="#" 
+            to="/chat" // Link para a página de chat
             colorClass="text-[#3A00FF]" 
           />
         </div>

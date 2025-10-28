@@ -26,6 +26,7 @@ import Agenda from "./pages/Agenda";
 import AgendaAdmin from "./pages/AgendaAdmin";
 import Enquetes from "./pages/Enquetes"; // Nova página de visualização
 import EnqueteAdmin from "./pages/EnqueteAdmin"; // Nova página de administração
+import Chat from "./pages/Chat"; // Nova página de Chat
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,10 @@ const App = () => (
           <Route path="/admin/agenda" element={<AgendaAdmin />} />
           <Route path="/enquetes" element={<Enquetes />} />
           <Route path="/admin/enquetes" element={<EnqueteAdmin />} />
+          
+          {/* Rotas de Chat */}
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/:groupId" element={<Chat />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
