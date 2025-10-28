@@ -3,7 +3,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import CadastroDadosPessoais from "./pages/CadastroDadosPessoais";
@@ -26,12 +25,12 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Login />} /> {/* Rota raiz agora aponta para Login */}
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro/dados-pessoais" element={<CadastroDadosPessoais />} />
           <Route path="/cadastro/redes-sociais" element={<CadastroRedesSociais />} />
           <Route path="/cadastro/endereco" element={<CadastroEndereco />} />
-          <Route path="/dados-saude" element={<CarteirinhaDeEmergencia />} /> {/* Rota antiga agora aponta para a nova página */}
+          <Route path="/dados-saude" element={<CarteirinhaDeEmergencia />} />
           <Route path="/contato-emergencia" element={<ContatoDeEmergencia />} />
           <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="/minhas-informacoes" element={<MinhasInformacoes />} />
