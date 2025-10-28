@@ -13,7 +13,7 @@ const Perfil = () => {
   // Itens do menu de funcionalidades
   const featureItems = [
     { name: "Dieta", path: "/dieta" }, 
-    { name: "Academia", path: "#" }, 
+    { name: "Academia", path: "/academia" }, 
     { name: "Enquete", path: "#" }, 
     { name: "Viagens", path: "#" }, 
     { name: "Chat", path: "#" }, 
@@ -25,7 +25,9 @@ const Perfil = () => {
       
       {/* Botão de Admin/Configurações no topo */}
       <header className="w-full max-w-sm md:max-w-md pt-4 px-4 flex justify-end">
-        <Link to="/admin/dieta" className="text-[#3A00FF] hover:opacity-80 transition-opacity">
+        {/* Por enquanto, o botão de admin leva para o admin de dieta. 
+           No futuro, podemos criar um painel de admin centralizado. */}
+        <Link to="/admin/academia" className="text-[#3A00FF] hover:opacity-80 transition-opacity">
           <Settings className="h-6 w-6" />
         </Link>
       </header>

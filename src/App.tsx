@@ -16,8 +16,10 @@ import LandingPageHome from "./pages/LandingPageHome";
 import Dashboard from "./pages/Dashboard";
 import CarteirinhaDeEmergencia from "./pages/CarteirinhaDeEmergencia";
 import DadosSaude from "./pages/DadosSaude";
-import Dieta from "./pages/Dieta"; // Nova página de visualização
-import DietaAdmin from "./pages/DietaAdmin"; // Nova página de administração
+import Dieta from "./pages/Dieta";
+import DietaAdmin from "./pages/DietaAdmin";
+import Academia from "./pages/Academia"; // Nova página de visualização
+import AcademiaAdmin from "./pages/AcademiaAdmin"; // Nova página de administração
 
 const queryClient = new QueryClient();
 
@@ -45,6 +47,8 @@ const App = () => (
           {/* Rotas de Funcionalidades */}
           <Route path="/dieta" element={<Dieta />} />
           <Route path="/admin/dieta" element={<DietaAdmin />} />
+          <Route path="/academia" element={<Academia />} />
+          <Route path="/admin/academia" element={<AcademiaAdmin />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
