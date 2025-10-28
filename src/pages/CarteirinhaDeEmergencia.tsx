@@ -1,10 +1,11 @@
 import React from 'react';
-import { ArrowLeft, Settings, User, Phone } from 'lucide-react';
+import { ArrowLeft, Settings, User, Phone, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileNavbar from '@/components/MobileNavbar';
 import HealthDataItem from '@/components/HealthDataItem';
 import { useProfileData } from '@/hooks/useProfileData';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 
 const CarteirinhaDeEmergencia = () => {
   const { profile, loading } = useProfileData();
@@ -30,6 +31,12 @@ const CarteirinhaDeEmergencia = () => {
   const emergenciaTelefone = profile?.emergencia_telefone || 'Não informado';
 
   const avatarUrl = profile?.avatar_url || null;
+
+  // Cria link do WhatsApp usando apenas dígitos (formato internacional recomendado)
+  const whatsappNumber = (profile?.emergencia_telefone ?? '').replace(/\D/g, '');
+  const whatsappLink = whatsappNumber
+    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Olá, estou entrando em contato pela carteirinha de emergência.')}`
+    : undefined;
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
@@ -153,6 +160,31 @@ const CarteirinhaDeEmergencia = () => {
                 <div className="flex items-center space-x-2 text-[#3A00FF] font-bold text-lg">
                   <Phone className="h-5 w-5" />
                   <span>{emergenciaTelefone}</span>
+                </div>
+
+                {/* Botão WhatsApp abaixo do telefone */}
+                <div className="mt-3">
+                  <Button
+                    variant="default"
+                    className="w-full bg-[#25D366] hover:bg-[#1ebe5b] text-white"
+                    asChild
+                    disabled={!whatsappNumber}
+                  >
+                    <a
+                      href={whatsappLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Enviar mensagem no WhatsApp"
+                    >
+                      <MessageCircle className="mr-2 h-4 w-4" />
+                      Enviar WhatsApp
+                    </a>
+                  </Button>
+                  {!whatsappNumber && (
+                    <p className="mt-2 text-sm text-red-600">
+                      Telefone de emergência inválido para WhatsApp.
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
