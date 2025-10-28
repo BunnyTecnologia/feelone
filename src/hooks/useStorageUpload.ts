@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface UploadResult {
-  url: string | null;
+  url: string | null; // URL utilizável imediatamente (pública ou assinada)
+  path: string;       // Caminho do arquivo no bucket (ex: 'public/{uid}/file.jpg')
   error: Error | null;
   uploading: boolean;
 }
@@ -29,7 +30,6 @@ export const useStorageUpload = (bucketName: string, folderPath: string = '') =>
     const filePath = `${safeFolderPath}${fileName}`;
 
     try {
-      // Upload com contentType correto e upsert habilitado
       const { error: uploadError } = await supabase.storage
         .from(bucketName)
         .upload(filePath, file, {
@@ -42,21 +42,26 @@ export const useStorageUpload = (bucketName: string, folderPath: string = '') =>
         throw uploadError;
       }
 
-      // Obter URL pública (se o bucket for público)
+      // Tenta URL pública
       const { data: publicUrlData } = supabase.storage
         .from(bucketName)
         .getPublicUrl(filePath);
 
-      if (!publicUrlData || !publicUrlData.publicUrl) {
-        throw new Error("Falha ao obter a URL pública após o upload.");
+      if (publicUrlData?.publicUrl) {
+        return { url: publicUrlData.publicUrl, path: filePath, error: null, uploading: false };
       }
 
-      return { url: publicUrlData.publicUrl, error: null, uploading: false };
+      // Fallback: cria URL assinada (se bucket for privado)
+      const { data: signedData } = await supabase.storage
+        .from(bucketName)
+        .createSignedUrl(filePath, 60 * 60 * 24 * 7); // 7 dias
+
+      return { url: signedData?.signedUrl ?? null, path: filePath, error: null, uploading: false };
 
     } catch (err) {
       const uploadError = err instanceof Error ? err : new Error("Erro desconhecido durante o upload.");
       setError(uploadError);
-      return { url: null, error: uploadError, uploading: false };
+      return { url: null, path: filePath, error: uploadError, uploading: false };
     } finally {
       setUploading(false);
     }

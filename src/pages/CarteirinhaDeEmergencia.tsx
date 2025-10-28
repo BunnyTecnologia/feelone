@@ -6,6 +6,7 @@ import HealthDataItem from '@/components/HealthDataItem';
 import { useProfileData } from '@/hooks/useProfileData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
+import useAvatarUrl from '@/hooks/useAvatarUrl';
 
 const CarteirinhaDeEmergencia = () => {
   const { profile, loading } = useProfileData();
@@ -30,9 +31,9 @@ const CarteirinhaDeEmergencia = () => {
   const emergenciaNome = profile?.emergencia_nome || 'Não informado';
   const emergenciaTelefone = profile?.emergencia_telefone || 'Não informado';
 
-  const avatarUrl = profile?.avatar_url || null;
+  const hasAvatar = Boolean(profile?.avatar_url);
+  const resolvedAvatarUrl = useAvatarUrl(profile?.avatar_url);
 
-  // Cria link do WhatsApp usando apenas dígitos (formato internacional recomendado)
   const whatsappNumber = (profile?.emergencia_telefone ?? '').replace(/\D/g, '');
   const whatsappLink = whatsappNumber
     ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Olá, estou entrando em contato pela carteirinha de emergência.')}`
@@ -40,8 +41,6 @@ const CarteirinhaDeEmergencia = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
-      
-      {/* Header com setas e engrenagem, mantendo acento roxo */}
       <header className="w-full max-w-sm md:max-w-md mx-auto pt-4 pb-6 px-4">
         <div className="flex justify-between items-center">
           <Link to="/">
@@ -56,17 +55,14 @@ const CarteirinhaDeEmergencia = () => {
         </div>
       </header>
 
-      {/* Conteúdo Principal */}
       <main className="flex-grow w-full max-w-sm md:max-w-md mx-auto px-4 pb-28 text-center">
-        
-        {/* Avatar e Nome */}
         <div className="mb-8">
           <div className="w-32 h-32 rounded-full mx-auto mb-3 overflow-hidden shadow-xl border-4 border-white">
             {loading ? (
               <Skeleton className="w-32 h-32 rounded-full" />
-            ) : avatarUrl ? (
+            ) : hasAvatar ? (
               <img
-                src={avatarUrl}
+                src={resolvedAvatarUrl}
                 alt={displayName}
                 className="w-full h-full object-cover"
               />
@@ -94,10 +90,7 @@ const CarteirinhaDeEmergencia = () => {
           )}
         </div>
 
-        {/* Card branco com borda roxa, cantos arredondados e sombra leve */}
         <div className="p-6 rounded-2xl text-left shadow-lg border-2 border-[#3A00FF] bg-white">
-          
-          {/* Dados de Saúde */}
           <h3 className="text-lg font-bold mb-4 text-[#3A00FF]">
             Dados de Saúde
           </h3>
@@ -130,10 +123,8 @@ const CarteirinhaDeEmergencia = () => {
             </div>
           )}
 
-          {/* Separador visual */}
           <div className="h-px bg-gray-200 my-6"></div>
 
-          {/* Contato de Emergência */}
           <h3 className="text-lg font-bold mb-4 text-[#3A00FF]">
             Contato de Emergência
           </h3>
@@ -162,7 +153,6 @@ const CarteirinhaDeEmergencia = () => {
                   <span>{emergenciaTelefone}</span>
                 </div>
 
-                {/* Botão WhatsApp abaixo do telefone */}
                 <div className="mt-3">
                   <Button
                     variant="default"
@@ -191,7 +181,6 @@ const CarteirinhaDeEmergencia = () => {
           )}
         </div>
 
-        {/* Logo do Patrocinador (opcional, mantendo conceito da home) */}
         <div className="w-full flex justify-center mt-10">
           <img
             src="/esportes-da-sorte-seeklogo.png"
@@ -201,7 +190,6 @@ const CarteirinhaDeEmergencia = () => {
         </div>
       </main>
 
-      {/* Navbar Móvel */}
       <MobileNavbar />
     </div>
   );

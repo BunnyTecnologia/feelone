@@ -6,6 +6,7 @@ import SocialIconLink from '@/components/SocialIconLink';
 import { Button } from '@/components/ui/button';
 import { useProfileData } from '@/hooks/useProfileData';
 import { Skeleton } from '@/components/ui/skeleton';
+import useAvatarUrl from '@/hooks/useAvatarUrl';
 
 const Perfil = () => {
   const { profile, loading } = useProfileData();
@@ -16,9 +17,8 @@ const Perfil = () => {
 
   const bioText = profile?.biografia ?? '';
 
-  const avatarSrc = profile?.avatar_url || '/placeholder.svg';
+  const resolvedAvatarSrc = useAvatarUrl(profile?.avatar_url);
 
-  // Itens do menu de funcionalidades
   const featureItems = [
     { name: "Dieta", path: "/dieta" }, 
     { name: "Academia", path: "/academia" }, 
@@ -30,31 +30,25 @@ const Perfil = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-white dark:bg-gray-900">
-      
-      {/* Botão de Admin/Configurações no topo */}
       <header className="w-full max-w-sm md:max-w-md pt-4 px-4 flex justify-end">
         <Link to="/admin/menu" className="text-[#3A00FF] hover:opacity-80 transition-opacity">
           <Settings className="h-6 w-6" />
         </Link>
       </header>
 
-      {/* Conteúdo Principal */}
       <main className="flex-grow w-full max-w-sm md:max-w-md mx-auto px-4 pt-4 pb-28 text-center">
-        
-        {/* Avatar */}
         <div className="mb-6">
           {loading ? (
             <Skeleton className="w-32 h-32 rounded-full mx-auto" />
           ) : (
             <img
-              src={avatarSrc}
+              src={resolvedAvatarSrc}
               alt={displayName}
               className="w-32 h-32 rounded-full mx-auto object-cover shadow-xl border-4 border-white"
             />
           )}
         </div>
 
-        {/* Informações do Usuário */}
         {loading ? (
           <div className="mb-8 space-y-3 px-4">
             <Skeleton className="h-6 w-40 mx-auto" />
@@ -71,7 +65,6 @@ const Perfil = () => {
           </>
         )}
 
-        {/* Links de Redes Sociais */}
         <div className="flex justify-center space-x-6 mb-8">
           <SocialIconLink 
             icon={Instagram} 
@@ -90,7 +83,6 @@ const Perfil = () => {
           />
         </div>
 
-        {/* Grade de Acessos Rápidos */}
         <section aria-label="Acessos rápidos" className="mb-12">
           <div className="grid grid-cols-2 gap-3">
             {featureItems.map((item) => (
@@ -108,7 +100,6 @@ const Perfil = () => {
           </div>
         </section>
 
-        {/* Logo do Patrocinador */}
         <div className="w-full flex justify-center">
           <div className="text-center">
             <img
@@ -120,7 +111,6 @@ const Perfil = () => {
         </div>
       </main>
 
-      {/* Navbar Móvel */}
       <MobileNavbar />
     </div>
   );
