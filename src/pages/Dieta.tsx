@@ -99,7 +99,11 @@ const Dieta = () => {
 
       {/* Floating Action Button (FAB) - Adicionar Dieta */}
       {isUserLoggedIn && (
-        <Link to="/admin/dieta" className="fixed bottom-24 left-6 z-40">
+        <Link 
+          to="/admin/dieta" 
+          state={{ openNew: true }} // Adiciona o estado para abrir o modal
+          className="fixed bottom-24 left-6 z-40"
+        >
           <Button 
             className="w-14 h-14 rounded-full bg-[#3A00FF] hover:bg-indigo-700 shadow-lg p-0"
             aria-label="Adicionar nova dieta"

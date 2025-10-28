@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, Trash2, Edit, Utensils } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import CustomInput from '@/components/CustomInput';
 import CustomTextarea from '@/components/CustomTextarea';
@@ -20,10 +20,20 @@ interface Diet {
 
 const DietaAdmin = () => {
   const { toast } = useToast();
+  const location = useLocation();
   const [diets, setDiets] = useState<Diet[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentDiet, setCurrentDiet] = useState<Partial<Diet> | null>(null);
+
+  // Efeito para verificar o estado de navegação e abrir o modal
+  useEffect(() => {
+    if (location.state && (location.state as { openNew?: boolean }).openNew) {
+      openNewDialog();
+      // Limpa o estado para que o modal não abra novamente ao recarregar a página
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const fetchDiets = async () => {
     setLoading(true);
