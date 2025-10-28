@@ -16,6 +16,7 @@ import MinhasInformacoes from "./pages/MinhasInformacoes";
 import Perfil from "./pages/Perfil";
 import LandingPageHome from "./pages/LandingPageHome";
 import Dashboard from "./pages/Dashboard";
+import CarteirinhaDeEmergencia from "./pages/CarteirinhaDeEmergencia";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/landing-page" element={<LandingPageHome />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/carteirinha-emergencia" element={<CarteirinhaDeEmergencia />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

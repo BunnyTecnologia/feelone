@@ -14,6 +14,7 @@ const pages = [
   { name: "Perfil", path: "/perfil" },
   { name: "Landing Page Home (Desktop)", path: "/landing-page" },
   { name: "Dashboard (Desktop)", path: "/dashboard" },
+  { name: "Carteirinha de Emergência", path: "/carteirinha-emergencia" },
 ];
 
 const Index = () => {
