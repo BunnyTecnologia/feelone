@@ -25,8 +25,8 @@ const Perfil = () => {
       
       {/* Botão de Admin/Configurações no topo */}
       <header className="w-full max-w-sm md:max-w-md pt-4 px-4 flex justify-end">
-        {/* O botão de admin agora leva para o admin de Enquetes. */}
-        <Link to="/admin/enquetes" className="text-[#3A00FF] hover:opacity-80 transition-opacity">
+        {/* O botão de admin agora leva para o menu de administração móvel */}
+        <Link to="/admin/menu" className="text-[#3A00FF] hover:opacity-80 transition-opacity">
           <Settings className="h-6 w-6" />
         </Link>
       </header>

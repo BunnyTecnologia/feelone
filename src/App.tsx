@@ -24,14 +24,15 @@ import Viagens from "./pages/Viagens";
 import ViagensAdmin from "./pages/ViagensAdmin";
 import Agenda from "./pages/Agenda";
 import AgendaAdmin from "./pages/AgendaAdmin";
-import Enquetes from "./pages/Enquetes"; // Nova página de visualização
-import EnqueteAdmin from "./pages/EnqueteAdmin"; // Nova página de administração
-import Chat from "./pages/Chat"; // Nova página de Chat
-import HomeRedirect from "./pages/HomeRedirect"; // Novo componente de redirecionamento
-import Noticias from "./pages/Noticias"; // Nova página de Notícias
-import NoticiasAdmin from "./pages/NoticiasAdmin"; // Nova página de Admin Notícias
-import DetalheNoticia from "./pages/DetalheNoticia"; // Nova página de Detalhes da Notícia
-import PoliticaDePrivacidade from "./pages/PoliticaDePrivacidade"; // Nova página de Política de Privacidade
+import Enquetes from "./pages/Enquetes";
+import EnqueteAdmin from "./pages/EnqueteAdmin";
+import Chat from "./pages/Chat";
+import HomeRedirect from "./pages/HomeRedirect";
+import Noticias from "./pages/Noticias";
+import NoticiasAdmin from "./pages/NoticiasAdmin";
+import DetalheNoticia from "./pages/DetalheNoticia";
+import PoliticaDePrivacidade from "./pages/PoliticaDePrivacidade";
+import AdminMobileMenu from "./pages/AdminMobileMenu"; // Importando o novo componente
 
 const queryClient = new QueryClient();
 
@@ -42,7 +43,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomeRedirect />} /> {/* Rota raiz agora usa o redirecionador */}
+          <Route path="/" element={<HomeRedirect />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro/dados-pessoais" element={<CadastroDadosPessoais />} />
           <Route path="/cadastro/redes-sociais" element={<CadastroRedesSociais />} />
@@ -52,30 +53,35 @@ const App = () => (
           <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="/minhas-informacoes" element={<MinhasInformacoes />} />
           <Route path="/perfil" element={<Perfil />} />
+          
+          {/* Rotas de Desktop Restritas */}
           <Route path="/landing-page" element={<LandingPageHome />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          
+          {/* Rotas de Funcionalidades */}
           <Route path="/carteirinha-emergencia" element={<CarteirinhaDeEmergencia />} />
           <Route path="/politica-privacidade" element={<PoliticaDePrivacidade />} />
           
-          {/* Rotas de Funcionalidades */}
+          {/* Rotas de Visualização (Mobile/Desktop) */}
           <Route path="/dieta" element={<Dieta />} />
-          <Route path="/admin/dieta" element={<DietaAdmin />} />
           <Route path="/academia" element={<Academia />} />
-          <Route path="/admin/academia" element={<AcademiaAdmin />} />
           <Route path="/viagens" element={<Viagens />} />
-          <Route path="/admin/viagens" element={<ViagensAdmin />} />
           <Route path="/agenda" element={<Agenda />} />
-          <Route path="/admin/agenda" element={<AgendaAdmin />} />
           <Route path="/enquetes" element={<Enquetes />} />
-          <Route path="/admin/enquetes" element={<EnqueteAdmin />} />
           <Route path="/noticias" element={<Noticias />} />
-          <Route path="/noticias/:newsId" element={<DetalheNoticia />} /> {/* Nova Rota de Detalhes */}
-          <Route path="/admin/noticias" element={<NoticiasAdmin />} />
-          
-          {/* Rotas de Chat */}
+          <Route path="/noticias/:newsId" element={<DetalheNoticia />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/chat/:groupId" element={<Chat />} />
 
+          {/* Rotas de Administração (CRUDs) */}
+          <Route path="/admin/menu" element={<AdminMobileMenu />} /> {/* Novo Menu Admin Mobile */}
+          <Route path="/admin/dieta" element={<DietaAdmin />} />
+          <Route path="/admin/academia" element={<AcademiaAdmin />} />
+          <Route path="/admin/viagens" element={<ViagensAdmin />} />
+          <Route path="/admin/agenda" element={<AgendaAdmin />} />
+          <Route path="/admin/enquetes" element={<EnqueteAdmin />} />
+          <Route path="/admin/noticias" element={<NoticiasAdmin />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
