@@ -1,26 +1,36 @@
-import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import CustomInput from '@/components/CustomInput';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useProfileData } from '@/hooks/useProfileData';
 
 const ContatoDeEmergencia = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { profile, loading: loadingProfile, userId } = useProfileData();
 
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
   const [parentesco, setParentesco] = useState('');
   const [email, setEmail] = useState('');
 
+  // Carregar dados do perfil
+  useEffect(() => {
+    if (profile) {
+      setNome(profile.emergencia_nome || '');
+      setTelefone(profile.emergencia_telefone || '');
+      setParentesco(profile.emergencia_parentesco || '');
+      setEmail(profile.emergencia_email || '');
+    }
+  }, [profile]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!userId) {
       toast({
         title: "Erro de Autenticação",
         description: "Usuário não logado. Por favor, faça login novamente.",
@@ -30,7 +40,7 @@ const ContatoDeEmergencia = () => {
     }
 
     const profileData = {
-      id: user.id,
+      id: userId,
       emergencia_nome: nome,
       emergencia_telefone: telefone,
       emergencia_parentesco: parentesco,
@@ -52,15 +62,23 @@ const ContatoDeEmergencia = () => {
 
     toast({
       title: "Sucesso!",
-      description: "Cadastro finalizado. Bem-vindo ao seu perfil!",
+      description: "Contato de emergência salvo.",
     });
 
-    // Redirecionar para a página Perfil, finalizando o fluxo de cadastro
-    navigate('/perfil');
+    // Redirecionar para Minhas Informações
+    navigate('/minhas-informacoes');
   };
 
   // Estilo para o botão principal (Salvar)
   const saveButtonStyle = "bg-[#3A00FF] hover:bg-indigo-700 text-white h-14 text-lg font-semibold rounded-xl";
+
+  if (loadingProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-[#3A00FF]" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-white dark:bg-gray-900 p-4">
@@ -68,8 +86,8 @@ const ContatoDeEmergencia = () => {
       {/* Header */}
       <header className="w-full max-w-sm md:max-w-md pt-4 pb-8">
         <div className="flex items-center space-x-4">
-          {/* Link para a página anterior (Dados de Saúde) */}
-          <Link to="/dados-saude">
+          {/* Link para a página anterior (Minhas Informações) */}
+          <Link to="/minhas-informacoes">
             <ArrowLeft className="text-[#3A00FF] h-6 w-6" />
           </Link>
           <h1 className="text-3xl font-bold text-[#3A00FF]">

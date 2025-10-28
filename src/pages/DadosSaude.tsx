@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -8,12 +8,14 @@ import CustomTextarea from '@/components/CustomTextarea';
 import HealthToggle from '@/components/HealthToggle';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useProfileData } from '@/hooks/useProfileData';
 
 const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 const DadosSaude = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { profile, loading: loadingProfile, userId } = useProfileData();
 
   // Estados do formulário
   const [tipoSanguineo, setTipoSanguineo] = useState<string>('');
@@ -23,15 +25,25 @@ const DadosSaude = () => {
   const [medicamentosUso, setMedicamentosUso] = useState('');
   const [alergiasMedicamentos, setAlergiasMedicamentos] = useState('');
 
+  // Carregar dados do perfil
+  useEffect(() => {
+    if (profile) {
+      setTipoSanguineo(profile.tipo_sanguineo || '');
+      setTemDiabetes(profile.tem_diabetes);
+      setTemProblemaCardiaco(profile.tem_problema_cardiaco);
+      setTemPressaoAlta(profile.tem_pressao_alta);
+      setMedicamentosUso(profile.medicamentos_uso || '');
+      setAlergiasMedicamentos(profile.alergias_medicamentos || '');
+    }
+  }, [profile]);
+
   // Estilo para o botão principal (Salvar)
   const saveButtonStyle = "bg-[#3A00FF] hover:bg-indigo-700 text-white h-14 text-lg font-semibold rounded-xl";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!userId) {
       toast({
         title: "Erro de Autenticação",
         description: "Usuário não logado. Por favor, faça login novamente.",
@@ -41,7 +53,7 @@ const DadosSaude = () => {
     }
 
     const profileData = {
-      id: user.id,
+      id: userId,
       tipo_sanguineo: tipoSanguineo || null,
       tem_diabetes: temDiabetes,
       tem_problema_cardiaco: temProblemaCardiaco,
@@ -68,9 +80,17 @@ const DadosSaude = () => {
       description: "Dados de saúde salvos com sucesso.",
     });
 
-    // Redirecionar para a próxima etapa (Contato de Emergência)
-    navigate('/contato-emergencia');
+    // Redirecionar para Minhas Informações
+    navigate('/minhas-informacoes');
   };
+
+  if (loadingProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-[#3A00FF]" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-white dark:bg-gray-900">

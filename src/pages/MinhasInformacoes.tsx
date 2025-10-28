@@ -20,7 +20,7 @@ const MinhasInformacoes = () => {
       {/* Header */}
       <header className="w-full max-w-sm md:max-w-md pt-4 pb-12">
         <div className="flex items-center space-x-4">
-          <Link to="/configuracoes">
+          <Link to="/configuracoes"> {/* Rota de volta corrigida */}
             <ArrowLeft className="text-[#3A00FF] h-6 w-6" />
           </Link>
           <h1 className="text-3xl font-bold text-[#3A00FF]">
