@@ -22,8 +22,10 @@ import Academia from "./pages/Academia";
 import AcademiaAdmin from "./pages/AcademiaAdmin";
 import Viagens from "./pages/Viagens";
 import ViagensAdmin from "./pages/ViagensAdmin";
-import Agenda from "./pages/Agenda"; // Nova página de visualização
-import AgendaAdmin from "./pages/AgendaAdmin"; // Nova página de administração
+import Agenda from "./pages/Agenda";
+import AgendaAdmin from "./pages/AgendaAdmin";
+import Enquetes from "./pages/Enquetes"; // Nova página de visualização
+import EnqueteAdmin from "./pages/EnqueteAdmin"; // Nova página de administração
 
 const queryClient = new QueryClient();
 
@@ -57,6 +59,8 @@ const App = () => (
           <Route path="/admin/viagens" element={<ViagensAdmin />} />
           <Route path="/agenda" element={<Agenda />} />
           <Route path="/admin/agenda" element={<AgendaAdmin />} />
+          <Route path="/enquetes" element={<Enquetes />} />
+          <Route path="/admin/enquetes" element={<EnqueteAdmin />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
