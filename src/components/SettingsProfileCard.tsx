@@ -8,7 +8,16 @@ interface SettingsProfileCardProps {
   to: string;
 }
 
+const getFirstAndLast = (fullName: string) => {
+  const parts = (fullName || '').trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '';
+  if (parts.length === 1) return parts[0];
+  return `${parts[0]} ${parts[parts.length - 1]}`;
+};
+
 const SettingsProfileCard: React.FC<SettingsProfileCardProps> = ({ name, avatarUrl, to }) => {
+  const displayName = getFirstAndLast(name);
+
   return (
     <Link 
       to={to} 
@@ -20,7 +29,7 @@ const SettingsProfileCard: React.FC<SettingsProfileCardProps> = ({ name, avatarU
           {name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
         </AvatarFallback>
       </Avatar>
-      <span className="text-xl font-bold text-white truncate">{name}</span>
+      <span className="text-xl font-bold text-white truncate">{displayName}</span>
     </Link>
   );
 };
