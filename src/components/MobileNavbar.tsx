@@ -13,7 +13,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon, to, isActive }) => (
   <Link 
     to={to} 
     className={cn(
-      "flex flex-col items-center justify-center w-full h-full transition-colors z-10 relative", // Adicionado z-10 relative
+      "flex flex-col items-center justify-center w-full h-full transition-colors z-10 relative",
       isActive ? "text-white" : "text-white/70 hover:text-white"
     )}
   >
@@ -38,14 +38,14 @@ const MobileNavbar = () => {
         </div>
 
         {/* Botão Central de Destaque (HeartPulse) */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 -top-8 z-20"> {/* Aumentado z-index para o botão central */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 -top-8 z-20">
           <Link to="/carteirinha-emergencia" className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-xl border-4 border-white">
             <HeartPulse className="h-8 w-8 text-white fill-white" />
           </Link>
         </div>
 
         {/* Itens de Navegação */}
-        <div className="flex justify-between h-full px-4 pt-4 relative z-10"> {/* Adicionado z-10 para o container dos itens */}
+        <div className="flex justify-between h-full px-4 pt-4 relative z-10">
           {/* Lado Esquerdo */}
           <div className="flex w-2/5 justify-around">
             <NavItem to="/" isActive={currentPath === "/"} icon={<Home className="h-6 w-6" />} />
@@ -57,7 +57,8 @@ const MobileNavbar = () => {
 
           {/* Lado Direito */}
           <div className="flex w-2/5 justify-around">
-            <NavItem to="/perfil" isActive={currentPath === "/perfil"} icon={<User className="h-6 w-6" />} />
+            {/* Alterado para direcionar ao admin/menu */}
+            <NavItem to="/admin/menu" isActive={currentPath === "/admin/menu"} icon={<User className="h-6 w-6" />} />
             <NavItem 
               to="/configuracoes" 
               isActive={currentPath === "/configuracoes"} 
