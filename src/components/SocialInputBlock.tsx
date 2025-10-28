@@ -6,23 +6,37 @@ import { Label } from '@/components/ui/label';
 interface SocialInputBlockProps {
   placeholder: string;
   id: string;
+  value: string;
+  onValueChange: (value: string) => void;
+  isSkipped: boolean;
+  onSkipChange: (skipped: boolean) => void;
 }
 
-const SocialInputBlock: React.FC<SocialInputBlockProps> = ({ placeholder, id }) => {
-  // O estilo do checkbox na imagem é um círculo com borda azul forte.
-  // O shadcn/ui Checkbox padrão é quadrado, mas podemos estilizar o wrapper.
-  // Para replicar o estilo do checkbox da imagem (círculo com borda azul forte),
-  // vamos usar o Checkbox padrão do shadcn/ui e ajustar o estilo do input.
+const SocialInputBlock: React.FC<SocialInputBlockProps> = ({ 
+  placeholder, 
+  id, 
+  value, 
+  onValueChange, 
+  isSkipped, 
+  onSkipChange 
+}) => {
   
   const checkboxId = `skip-${id}`;
 
   return (
     <div className="space-y-2">
-      <CustomInput placeholder={placeholder} />
+      <CustomInput 
+        placeholder={placeholder} 
+        value={value}
+        onChange={(e) => onValueChange(e.target.value)}
+        disabled={isSkipped}
+      />
       
       <div className="flex items-center space-x-2 pt-1">
         <Checkbox 
           id={checkboxId} 
+          checked={isSkipped}
+          onCheckedChange={(checked) => onSkipChange(!!checked)}
           className="h-5 w-5 border-2 border-[#3A00FF] data-[state=checked]:bg-[#3A00FF] data-[state=checked]:text-white rounded-full"
         />
         <Label 
