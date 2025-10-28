@@ -119,7 +119,7 @@ const CadastroRedesSociais = () => {
         <form onSubmit={handleSubmit} className="w-full space-y-6">
           
           <SocialInputBlock 
-            placeholder="Link Facebook" 
+            label="Link Facebook" 
             id="facebook" 
             value={facebook}
             onValueChange={setFacebook}
@@ -127,7 +127,7 @@ const CadastroRedesSociais = () => {
             onSkipChange={setSkipFacebook}
           />
           <SocialInputBlock 
-            placeholder="Link Instagram" 
+            label="Link Instagram" 
             id="instagram" 
             value={instagram}
             onValueChange={setInstagram}
@@ -135,7 +135,7 @@ const CadastroRedesSociais = () => {
             onSkipChange={setSkipInstagram}
           />
           <SocialInputBlock 
-            placeholder="Celular Whatsapp" 
+            label="Celular Whatsapp" 
             id="whatsapp" 
             value={whatsapp}
             onValueChange={setWhatsapp}
@@ -143,7 +143,7 @@ const CadastroRedesSociais = () => {
             onSkipChange={setSkipWhatsapp}
           />
           <SocialInputBlock 
-            placeholder="Site" 
+            label="Site" 
             id="site" 
             value={site}
             onValueChange={setSite}
@@ -151,7 +151,7 @@ const CadastroRedesSociais = () => {
             onSkipChange={setSkipSite}
           />
           <SocialInputBlock 
-            placeholder="Chave Pix" 
+            label="Chave Pix" 
             id="pix" 
             value={pix}
             onValueChange={setPix}

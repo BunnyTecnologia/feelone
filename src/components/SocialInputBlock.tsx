@@ -4,7 +4,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 
 interface SocialInputBlockProps {
-  placeholder: string;
+  label: string; // Alterado de placeholder para label
   id: string;
   value: string;
   onValueChange: (value: string) => void;
@@ -13,7 +13,7 @@ interface SocialInputBlockProps {
 }
 
 const SocialInputBlock: React.FC<SocialInputBlockProps> = ({ 
-  placeholder, 
+  label, 
   id, 
   value, 
   onValueChange, 
@@ -25,8 +25,12 @@ const SocialInputBlock: React.FC<SocialInputBlockProps> = ({
 
   return (
     <div className="space-y-2">
+      <Label htmlFor={id} className="text-lg font-bold text-gray-900 dark:text-white">
+        {label}
+      </Label>
       <CustomInput 
-        placeholder={placeholder} 
+        id={id}
+        placeholder={label} // Mantendo o label como placeholder também, por conveniência
         value={value}
         onChange={(e) => onValueChange(e.target.value)}
         disabled={isSkipped}
