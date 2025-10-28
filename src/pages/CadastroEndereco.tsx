@@ -116,8 +116,8 @@ const CadastroEndereco = () => {
       description: "Endereço salvo com sucesso.",
     });
 
-    // Redirecionar para a próxima etapa (Contato de Emergência)
-    navigate('/contato-emergencia');
+    // Redirecionar para a próxima etapa (Dados de Saúde)
+    navigate('/dados-saude');
   };
 
   // Estilo para o botão principal (Salvar)

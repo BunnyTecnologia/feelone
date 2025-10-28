@@ -52,12 +52,11 @@ const ContatoDeEmergencia = () => {
 
     toast({
       title: "Sucesso!",
-      description: "Contato de emergência salvo com sucesso.",
+      description: "Cadastro finalizado. Bem-vindo ao seu perfil!",
     });
 
-    // Redirecionar para a próxima etapa (ou para o dashboard/perfil)
-    // Por enquanto, vamos para a página de Minhas Informações
-    navigate('/minhas-informacoes');
+    // Redirecionar para a página Perfil, finalizando o fluxo de cadastro
+    navigate('/perfil');
   };
 
   // Estilo para o botão principal (Salvar)
@@ -69,8 +68,8 @@ const ContatoDeEmergencia = () => {
       {/* Header */}
       <header className="w-full max-w-sm md:max-w-md pt-4 pb-8">
         <div className="flex items-center space-x-4">
-          {/* Link para a página anterior (Minhas Informações) */}
-          <Link to="/minhas-informacoes">
+          {/* Link para a página anterior (Dados de Saúde) */}
+          <Link to="/dados-saude">
             <ArrowLeft className="text-[#3A00FF] h-6 w-6" />
           </Link>
           <h1 className="text-3xl font-bold text-[#3A00FF]">

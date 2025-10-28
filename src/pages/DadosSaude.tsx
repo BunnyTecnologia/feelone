@@ -69,8 +69,8 @@ const DadosSaude = () => {
       description: "Dados de saúde salvos com sucesso.",
     });
 
-    // Redirecionar para a página de Minhas Informações
-    navigate('/minhas-informacoes');
+    // Redirecionar para a próxima etapa (Contato de Emergência)
+    navigate('/contato-emergencia');
   };
 
   return (
