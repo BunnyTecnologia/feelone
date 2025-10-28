@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Camera, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Camera, User, Loader2, ArrowLeft } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
@@ -9,11 +9,14 @@ import { useStorageUpload } from '@/hooks/useStorageUpload';
 import CustomInput from '@/components/CustomInput';
 import CustomPasswordInput from '@/components/CustomPasswordInput';
 import CustomTextarea from '@/components/CustomTextarea';
+import { useProfileData, ProfileData } from '@/hooks/useProfileData';
 
 const CadastroDadosPessoais = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const { profile, loading: loadingProfile, userId, refetch } = useProfileData();
   
   // Estados do formulário
   const [email, setEmail] = useState('');
@@ -23,6 +26,7 @@ const CadastroDadosPessoais = () => {
   const [lastName, setLastName] = useState('');
   const [biography, setBiography] = useState('');
   const [gender, setGender] = useState<'Homem' | 'Mulher' | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Estados da imagem
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -30,13 +34,37 @@ const CadastroDadosPessoais = () => {
 
   const { uploadFile, uploading } = useStorageUpload('avatars', 'public/');
 
+  // Carregar dados do perfil e do usuário logado
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (profile && userId) {
+        // Carregar dados da tabela profiles
+        setFirstName(profile.first_name || '');
+        setLastName(profile.last_name || '');
+        setBiography(profile.biografia || '');
+        setGender(profile.genero || null);
+        setAvatarPreviewUrl(profile.avatar_url || null);
+
+        // Carregar email do Auth (não está na tabela profiles)
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          setEmail(user.email || '');
+        }
+      }
+    };
+    loadUserData();
+  }, [profile, userId]);
+
+  // Gerenciar preview de nova imagem
   useEffect(() => {
     if (avatarFile) {
       const url = URL.createObjectURL(avatarFile);
       setAvatarPreviewUrl(url);
       return () => URL.revokeObjectURL(url);
+    } else if (profile && !profile.avatar_url) {
+      setAvatarPreviewUrl(null);
     }
-  }, [avatarFile]);
+  }, [avatarFile, profile]);
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
@@ -51,6 +79,7 @@ const CadastroDadosPessoais = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     if (password !== confirmPassword) {
       toast({
@@ -58,6 +87,7 @@ const CadastroDadosPessoais = () => {
         description: "As senhas não coincidem.",
         variant: "destructive",
       });
+      setIsSubmitting(false);
       return;
     }
 
@@ -67,70 +97,83 @@ const CadastroDadosPessoais = () => {
         description: "Por favor, selecione seu gênero.",
         variant: "destructive",
       });
+      setIsSubmitting(false);
       return;
     }
 
-    // 1. Criar o usuário no Supabase Auth
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          first_name: firstName,
-          last_name: lastName,
+    let currentUserId = userId;
+    let isNewUser = !userId;
+
+    // 1. Autenticação (SignUp para novo usuário, ou Update de senha/email para existente)
+    if (isNewUser) {
+      // Novo Cadastro
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          }
+        }
+      });
+
+      if (authError) {
+        toast({ title: "Erro no Cadastro", description: authError.message, variant: "destructive" });
+        setIsSubmitting(false);
+        return;
+      }
+      currentUserId = authData.user?.id || null;
+    } else {
+      // Usuário existente: Atualizar senha e/ou email se preenchidos
+      if (password) {
+        const { error: passwordError } = await supabase.auth.updateUser({ password });
+        if (passwordError) {
+          toast({ title: "Erro ao atualizar senha", description: passwordError.message, variant: "destructive" });
+          setIsSubmitting(false);
+          return;
         }
       }
-    });
+      if (email && email !== profile?.id) { // O email do Auth não está no profile, mas o ID do profile é o ID do Auth.
+        const { error: emailError } = await supabase.auth.updateUser({ email });
+        if (emailError) {
+          toast({ title: "Erro ao atualizar email", description: emailError.message, variant: "destructive" });
+          setIsSubmitting(false);
+          return;
+        }
+      }
+    }
 
-    if (authError) {
-      toast({
-        title: "Erro no Cadastro",
-        description: authError.message,
-        variant: "destructive",
-      });
+    if (!currentUserId) {
+      toast({ title: "Erro Desconhecido", description: "Falha ao obter o ID do usuário.", variant: "destructive" });
+      setIsSubmitting(false);
       return;
     }
 
-    const userId = authData.user?.id;
-    if (!userId) {
-      toast({
-        title: "Erro Desconhecido",
-        description: "Falha ao obter o ID do usuário após o cadastro.",
-        variant: "destructive",
-      });
-      return;
-    }
+    let avatarUrl: string | null = profile?.avatar_url || null;
 
-    let avatarUrl: string | null = null;
-
-    // 2. Upload da Imagem (se houver)
+    // 2. Upload da Imagem (se houver um novo arquivo)
     if (avatarFile) {
-      const fileName = `${userId}/${Date.now()}_avatar.jpg`;
+      const fileName = `${currentUserId}/${Date.now()}_avatar.jpg`;
       const { url, error } = await uploadFile(avatarFile, fileName);
       
       if (error) {
-        // O cadastro do usuário já foi feito, mas falhou o upload. Avisamos e continuamos.
-        toast({
-          title: "Aviso: Falha no Upload",
-          description: `Falha ao carregar a imagem: ${error.message}. Continuando sem avatar.`,
-          variant: "destructive",
-        });
+        toast({ title: "Aviso: Falha no Upload", description: `Falha ao carregar a imagem: ${error.message}.`, variant: "destructive" });
       } else {
         avatarUrl = url;
       }
     }
 
     // 3. Salvar/Atualizar dados adicionais na tabela 'profiles'
-    // Nota: O trigger handle_new_user já deve ter criado a linha básica.
-    const profileData = {
-      id: userId,
+    const profileData: Partial<ProfileData> = {
+      id: currentUserId,
       first_name: firstName,
       last_name: lastName,
       biografia: biography,
       genero: gender,
-      // Usamos um slug simples baseado no nome por enquanto, se não houver um campo de slug na imagem
-      slug_perfil: `${firstName.toLowerCase()}.${lastName.toLowerCase()}-${userId.slice(0, 4)}`, 
-      ...(avatarUrl && { avatar_url: avatarUrl }),
+      // Mantém o slug se existir, ou cria um novo se for novo usuário
+      slug_perfil: profile?.slug_perfil || `${firstName.toLowerCase()}.${lastName.toLowerCase()}-${currentUserId.slice(0, 4)}`, 
+      avatar_url: avatarUrl,
     };
 
     const { error: dbError } = await supabase
@@ -138,30 +181,54 @@ const CadastroDadosPessoais = () => {
       .upsert([profileData], { onConflict: 'id' });
 
     if (dbError) {
-      toast({
-        title: "Erro ao Salvar Perfil",
-        description: `Falha ao salvar dados adicionais: ${dbError.message}`,
-        variant: "destructive",
-      });
+      toast({ title: "Erro ao Salvar Perfil", description: `Falha ao salvar dados adicionais: ${dbError.message}`, variant: "destructive" });
+      setIsSubmitting(false);
       return;
     }
 
     toast({
       title: "Sucesso!",
-      description: "Cadastro concluído. Redirecionando para as Redes Sociais.",
+      description: isNewUser ? "Cadastro concluído. Redirecionando..." : "Dados pessoais atualizados com sucesso.",
     });
 
-    // Redirecionar para a próxima etapa do cadastro
-    navigate('/cadastro/redes-sociais');
+    setIsSubmitting(false);
+    refetch(); // Recarrega os dados do perfil
+    
+    // Redirecionar para a próxima etapa ou para Minhas Informações
+    if (isNewUser) {
+      navigate('/cadastro/redes-sociais');
+    } else {
+      navigate('/minhas-informacoes');
+    }
   };
 
   // Estilo para o botão principal (Salvar)
   const saveButtonStyle = "bg-[#3A00FF] hover:bg-indigo-700 text-white h-14 text-lg font-semibold rounded-xl";
 
+  if (loadingProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-[#3A00FF]" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center bg-white dark:bg-gray-900 p-4">
       
-      <div className="w-full max-w-sm md:max-w-md flex flex-col items-center pt-12">
+      {/* Header */}
+      <header className="w-full max-w-sm md:max-w-md pt-4 pb-8">
+        <div className="flex items-center space-x-4">
+          <Link to={userId ? "/minhas-informacoes" : "/login"}>
+            <ArrowLeft className="text-[#3A00FF] h-6 w-6" />
+          </Link>
+          <h1 className="text-3xl font-bold text-[#3A00FF]">
+            {userId ? 'Editar Dados Pessoais' : 'Cadastro'}
+          </h1>
+        </div>
+      </header>
+
+      <div className="w-full max-w-sm md:max-w-md flex flex-col items-center">
         
         {/* Seletor de Imagem de Perfil */}
         <div className="relative mb-8 cursor-pointer" onClick={handleImageClick}>
@@ -171,7 +238,7 @@ const CadastroDadosPessoais = () => {
             onChange={handleFileChange}
             accept="image/*"
             className="hidden"
-            disabled={uploading}
+            disabled={uploading || isSubmitting}
           />
           {/* Avatar Style: Cinza claro com borda sutil */}
           <div className={`w-32 h-32 rounded-full flex items-center justify-center transition-all duration-300 ${avatarPreviewUrl ? 'border-4 border-gray-200' : 'bg-gray-200'}`}>
@@ -201,12 +268,14 @@ const CadastroDadosPessoais = () => {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               required
+              disabled={isSubmitting}
             />
             <CustomInput 
               placeholder="Sobrenome" 
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               required
+              disabled={isSubmitting}
             />
           </div>
 
@@ -217,22 +286,25 @@ const CadastroDadosPessoais = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={isSubmitting}
           />
 
-          {/* Senha */}
+          {/* Senha (Opcional para edição, obrigatório para novo cadastro) */}
           <CustomPasswordInput 
-            placeholder="Senha" 
+            placeholder={userId ? "Nova Senha (opcional)" : "Senha"} 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            required={!userId}
+            disabled={isSubmitting}
           />
 
-          {/* Confirma Senha */}
+          {/* Confirma Senha (Opcional para edição, obrigatório para novo cadastro) */}
           <CustomPasswordInput 
-            placeholder="Confirma Senha" 
+            placeholder={userId ? "Confirma Nova Senha" : "Confirma Senha"} 
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            required
+            required={!userId}
+            disabled={isSubmitting}
           />
 
           {/* Biografia */}
@@ -245,6 +317,7 @@ const CadastroDadosPessoais = () => {
               placeholder="Escreva um pouco sobre você..." 
               value={biography}
               onChange={(e) => setBiography(e.target.value)}
+              disabled={isSubmitting}
             />
           </div>
 
@@ -262,6 +335,7 @@ const CadastroDadosPessoais = () => {
                     ? 'bg-[#3A00FF] border-[#3A00FF] text-white hover:bg-indigo-700' 
                     : 'bg-white border-[#3A00FF] text-[#3A00FF] hover:bg-gray-50 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800'
                 }`}
+                disabled={isSubmitting}
               >
                 Homem
               </Button>
@@ -273,6 +347,7 @@ const CadastroDadosPessoais = () => {
                     ? 'bg-[#3A00FF] border-[#3A00FF] text-white hover:bg-indigo-700' 
                     : 'bg-white border-[#3A00FF] text-[#3A00FF] hover:bg-gray-50 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800'
                 }`}
+                disabled={isSubmitting}
               >
                 Mulher
               </Button>
@@ -284,9 +359,14 @@ const CadastroDadosPessoais = () => {
             <Button 
               type="submit" 
               className={`w-full ${saveButtonStyle}`}
-              disabled={uploading}
+              disabled={uploading || isSubmitting}
             >
-              {uploading ? 'Salvando...' : 'Salvar'}
+              {(uploading || isSubmitting) ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Salvando...
+                </>
+              ) : 'Salvar'}
             </Button>
           </div>
         </form>
